@@ -7,6 +7,8 @@ import {
     useSplash,
 } from "@/features/SplashScreen";
 
+import { AuthProvider } from "@/shared/auth";
+
 export default function App() {
     const {
         finished,
@@ -22,8 +24,10 @@ export default function App() {
     }
 
     return (
-        <RouterProvider
-            router={router}
-        />
+        <AuthProvider>
+            <RouterProvider
+                router={router}
+            />
+        </AuthProvider>
     );
 }

@@ -16,20 +16,38 @@ import { LogsPage } from "@/pages/admin/LogsPage";
 import { ExportPage } from "@/pages/admin/ExportPage";
 import { Guideline } from "@/pages/Guideline/Guideline";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import {RootRedirect} from "@/pages/RootRedirect"
+import {GuestRoute} from "@/shared/auth"
+
+import { ProtectedRoute } from "@/shared/auth";
+
+import {
+    Navigate,
+} from "react-router-dom";
 
 export const router = createBrowserRouter([
     {
+        path: "/",
+
+        element: <RootRedirect />,
+    },
+    {
+        path: "/directory",
         element: <PublicLayout />,
         children: [
             {
-                path: "/",
+                index: true,
                 element: <DirectoryPage />,
             },
         ],
     },
 
     {
-        element: <AuthLayout />,
+        element: (
+            <GuestRoute>
+                <AuthLayout />
+            </GuestRoute>
+        ),
         children: [
             {
                 path: "/login",
@@ -40,7 +58,11 @@ export const router = createBrowserRouter([
 
     {
         path: "/admin",
-        element: <AdminLayout />,
+        element: (
+            <ProtectedRoute>
+                <AdminLayout />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 index: true,
