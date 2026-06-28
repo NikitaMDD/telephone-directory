@@ -11,6 +11,8 @@ import type {
     UpdateDepartmentDto,
 } from "../dto/department.dto.js";
 
+import { auditService } from "./audit.service.js";
+
 export class DepartmentService {
 
     async getAll() {
@@ -62,7 +64,17 @@ export class DepartmentService {
             }
         }
 
-        return departmentRepository.create(data);
+        const department =
+            await departmentRepository.create(data);
+
+        await auditService.create({
+            action: "CREATE",
+            entity: "DEPARTMENT",
+            entityId: department.id,
+            newValue: department,
+        });
+
+        return department;
     }
 
     async update(
@@ -104,17 +116,35 @@ export class DepartmentService {
             }
         }
 
-        return departmentRepository.update(
-            id,
-            data
-        );
+        const oldDepartment =
+            await this.getById(id);
+
+        const updated =
+            await departmentRepository.update(id, data);
+
+        await auditService.create({
+            action: "UPDATE",
+            entity: "DEPARTMENT",
+            entityId: id,
+            oldValue: oldDepartment,
+            newValue: updated,
+        });
+
+        return updated;
     }
 
     async remove(id: string) {
+        const oldDepartment =
+            await this.getById(id);
 
-        await this.getById(id);
+        await departmentRepository.delete(id);
 
-        return departmentRepository.delete(id);
+        await auditService.create({
+            action: "DELETE",
+            entity: "DEPARTMENT",
+            entityId: id,
+            oldValue: oldDepartment,
+        });
     }
 }
 

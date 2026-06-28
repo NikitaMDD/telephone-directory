@@ -9,6 +9,8 @@ import type {
     UpdateEmployeeDto,
 } from "../dto/employee.dto.js";
 
+import { auditService } from "./audit.service.js";
+
 export class EmployeeService {
     async getAll() {
         return employeeRepository.findAll();
@@ -43,7 +45,17 @@ export class EmployeeService {
             );
         }
 
-        return employeeRepository.create(data);
+        const employee =
+            await employeeRepository.create(data);
+
+        await auditService.create({
+            action: "CREATE",
+            entity: "EMPLOYEE",
+            entityId: employee.id,
+            newValue: employee,
+        });
+
+        return employee;
     }
 
     async update(
@@ -68,16 +80,37 @@ export class EmployeeService {
             }
         }
 
-        return employeeRepository.update(
-            id,
-            data
-        );
+        const oldEmployee =
+            await this.getById(id);
+
+        const updated =
+            await employeeRepository.update(id, data);
+
+        await auditService.create({
+            action: "UPDATE",
+            entity: "EMPLOYEE",
+            entityId: id,
+            oldValue: oldEmployee,
+            newValue: updated,
+        });
+
+        return updated;
     }
 
     async remove(id: string) {
         await this.getById(id);
 
-        return employeeRepository.delete(id);
+        const oldEmployee =
+            await this.getById(id);
+
+        await employeeRepository.delete(id);
+
+        await auditService.create({
+            action: "DELETE",
+            entity: "EMPLOYEE",
+            entityId: id,
+            oldValue: oldEmployee,
+        });
     }
 }
 

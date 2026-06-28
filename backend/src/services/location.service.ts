@@ -9,6 +9,8 @@ import type {
     UpdateLocationDto,
 } from "../dto/location.dto.js";
 
+import { auditService } from "./audit.service.js";
+
 export class LocationService {
     async getAll() {
         return locationRepository.findAll();
@@ -29,7 +31,17 @@ export class LocationService {
     }
 
     async create(data: CreateLocationDto) {
-        return locationRepository.create(data);
+        const location =
+            await locationRepository.create(data);
+
+        await auditService.create({
+            action: "CREATE",
+            entity: "LOCATION",
+            entityId: location.id,
+            newValue: location,
+        });
+
+        return location;
     }
 
     async update(
@@ -38,13 +50,37 @@ export class LocationService {
     ) {
         await this.getById(id);
 
-        return locationRepository.update(id, data);
+        const oldLocation =
+            await this.getById(id);
+
+        const updated =
+            await locationRepository.update(id, data);
+
+        await auditService.create({
+            action: "UPDATE",
+            entity: "LOCATION",
+            entityId: id,
+            oldValue: oldLocation,
+            newValue: updated,
+        });
+
+        return updated;
     }
 
     async remove(id: string) {
         await this.getById(id);
 
-        return locationRepository.delete(id);
+        const oldLocation =
+            await this.getById(id);
+
+        await locationRepository.delete(id);
+
+        await auditService.create({
+            action: "DELETE",
+            entity: "LOCATION",
+            entityId: id,
+            oldValue: oldLocation,
+        });
     }
 }
 
