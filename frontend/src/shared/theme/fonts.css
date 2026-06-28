@@ -1,0 +1,23 @@
+@font-face {
+    font-family: "ALS Granate";
+    src: url("./fonts/ALS_Granate_Regular_1.1.otf")
+        format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ALS Granate";
+    src: url("./fonts/ALS_Granate_Bold_1.1.otf")
+        format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ALS Tolstoy";
+    src: url("./fonts/ALSTolstoy-Regular.otf")
+        format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
