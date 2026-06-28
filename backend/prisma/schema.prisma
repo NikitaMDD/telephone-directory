@@ -1,13 +1,113 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum DepartmentType {
+  FACULTY
+  DEPARTMENT
+  ADMINISTRATION
+  OTHER
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  login        String     @unique
+  passwordHash String
+  role         Role       @default(EDITOR)
+  isActive     Boolean    @default(true)
+  auditLogs    AuditLog[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([login])
+}
+
+model Department {
+  id           String         @id @default(cuid())
+  name         String
+  abbreviation String?
+  type         DepartmentType
+  sortOrder    Int            @default(0)
+  isActive     Boolean        @default(true)
+
+  parentId String?
+  parent   Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children Department[] @relation("DepartmentHierarchy")
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Restrict)
+
+  employees Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentId, name], name: "parent_name_unique")
+  @@index([parentId])
+  @@index([locationId])
+  @@index([type])
+  @@index([sortOrder])
+}
+
+model Location {
+  id          String       @id @default(cuid())
+  name        String
+  sortOrder   Int          @default(0)
+  isActive    Boolean      @default(true)
+  departments Department[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([sortOrder])
+}
+
+model Employee {
+  id            String     @id @default(cuid())
+  lastName      String
+  firstName     String
+  middleName    String?
+  position      String
+  internalPhone String?
+  cityPhone     String?
+  email         String?
+  room          String?
+  sortOrder     Int        @default(0)
+  isActive      Boolean    @default(true)
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([lastName])
+  @@index([internalPhone])
+  @@index([cityPhone])
+  @@index([email])
+  @@index([departmentId])
+  @@index([sortOrder])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String
+  oldValue  Json?
+  newValue  Json?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
