@@ -65,8 +65,6 @@ export function LocationsPage() {
                 <Button
                     onClick={handleCreate}
                 >
-                    <Plus size={18} />
-
                     Добавить корпус
                 </Button>
 

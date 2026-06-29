@@ -67,9 +67,6 @@ export function DepartmentsPage() {
                         handleCreate
                     }
                 >
-                    <Plus
-                        size={18}
-                    />
 
                     Добавить подразделение
                 </Button>

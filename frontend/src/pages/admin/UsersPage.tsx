@@ -61,8 +61,6 @@ export function UsersPage() {
                 <Button
                     onClick={handleCreate}
                 >
-                    <Plus size={18} />
-
                     Добавить пользователя
                 </Button>
 
