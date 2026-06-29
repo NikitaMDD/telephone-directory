@@ -12,7 +12,7 @@ import { cn } from "@/shared/lib/cn";
 interface Props<T> {
     label?: string;
     placeholder?: string;
-    items: T[];
+    items: readonly T[];
     value?: string;
     error?: string;
     disabled?: boolean;

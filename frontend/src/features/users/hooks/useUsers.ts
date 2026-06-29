@@ -4,36 +4,38 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 
-import { departmentsApi } from "../api/departments.api";
+import { usersApi } from "../api/users.api";
 
-import type { UpdateDepartmentDto } from "../types";
+import type {
+    UpdateUserDto,
+} from "../types";
 
-export function useDepartments() {
+export function useUsers() {
     return useQuery({
-        queryKey: ["departments"],
-        queryFn: departmentsApi.getAll,
+        queryKey: ["users"],
+        queryFn: usersApi.getAll,
     });
 }
 
-export function useCreateDepartment() {
+export function useCreateUser() {
     const queryClient =
         useQueryClient();
 
     return useMutation({
         mutationFn:
-            departmentsApi.create,
+            usersApi.create,
 
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "users",
                 ],
             });
         },
     });
 }
 
-export function useUpdateDepartment() {
+export function useUpdateUser() {
     const queryClient =
         useQueryClient();
 
@@ -43,9 +45,9 @@ export function useUpdateDepartment() {
             data,
         }: {
             id: string;
-            data: UpdateDepartmentDto;
+            data: UpdateUserDto;
         }) =>
-            departmentsApi.update(
+            usersApi.update(
                 id,
                 data
             ),
@@ -53,25 +55,25 @@ export function useUpdateDepartment() {
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "users",
                 ],
             });
         },
     });
 }
 
-export function useDeleteDepartment() {
+export function useDeleteUser() {
     const queryClient =
         useQueryClient();
 
     return useMutation({
         mutationFn:
-            departmentsApi.remove,
+            usersApi.remove,
 
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "users",
                 ],
             });
         },

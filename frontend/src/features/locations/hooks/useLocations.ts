@@ -4,36 +4,38 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 
-import { departmentsApi } from "../api/departments.api";
+import { locationsApi } from "../api/locations.api";
 
-import type { UpdateDepartmentDto } from "../types";
+import type {
+    UpdateLocationDto,
+} from "../types";
 
-export function useDepartments() {
+export function useLocations() {
     return useQuery({
-        queryKey: ["departments"],
-        queryFn: departmentsApi.getAll,
+        queryKey: ["locations"],
+        queryFn: locationsApi.getAll,
     });
 }
 
-export function useCreateDepartment() {
+export function useCreateLocation() {
     const queryClient =
         useQueryClient();
 
     return useMutation({
         mutationFn:
-            departmentsApi.create,
+            locationsApi.create,
 
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "locations",
                 ],
             });
         },
     });
 }
 
-export function useUpdateDepartment() {
+export function useUpdateLocation() {
     const queryClient =
         useQueryClient();
 
@@ -43,9 +45,9 @@ export function useUpdateDepartment() {
             data,
         }: {
             id: string;
-            data: UpdateDepartmentDto;
+            data: UpdateLocationDto;
         }) =>
-            departmentsApi.update(
+            locationsApi.update(
                 id,
                 data
             ),
@@ -53,25 +55,25 @@ export function useUpdateDepartment() {
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "locations",
                 ],
             });
         },
     });
 }
 
-export function useDeleteDepartment() {
+export function useDeleteLocation() {
     const queryClient =
         useQueryClient();
 
     return useMutation({
         mutationFn:
-            departmentsApi.remove,
+            locationsApi.remove,
 
         onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: [
-                    "departments",
+                    "locations",
                 ],
             });
         },

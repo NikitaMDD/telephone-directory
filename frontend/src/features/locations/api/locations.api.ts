@@ -1,25 +1,27 @@
 import { api } from "@/shared/api";
 
 import type {
-    Department,
-    CreateDepartmentDto,
-    UpdateDepartmentDto,
+    Location,
+    CreateLocationDto,
+    UpdateLocationDto,
 } from "../types";
 
-export const departmentsApi = {
+export const locationsApi = {
     getAll() {
-        return api<Department[]>("/departments");
-    },
-
-    getById(id: string) {
-        return api<Department>(
-            `/departments/${id}`
+        return api<Location[]>(
+            "/locations"
         );
     },
 
-    create(dto: CreateDepartmentDto) {
-        return api<Department>(
-            "/departments",
+    getById(id: string) {
+        return api<Location>(
+            `/locations/${id}`
+        );
+    },
+
+    create(dto: CreateLocationDto) {
+        return api<Location>(
+            "/locations",
             {
                 method: "POST",
                 body: dto,
@@ -29,10 +31,10 @@ export const departmentsApi = {
 
     update(
         id: string,
-        dto: UpdateDepartmentDto
+        dto: UpdateLocationDto
     ) {
-        return api<Department>(
-            `/departments/${id}`,
+        return api<Location>(
+            `/locations/${id}`,
             {
                 method: "PUT",
                 body: dto,
@@ -42,7 +44,7 @@ export const departmentsApi = {
 
     remove(id: string) {
         return api<void>(
-            `/departments/${id}`,
+            `/locations/${id}`,
             {
                 method: "DELETE",
             }
