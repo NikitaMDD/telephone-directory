@@ -10,13 +10,9 @@ import { Typography } from "../Typography";
 interface InputProps
     extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
-
     error?: string;
-
     helperText?: string;
-
     leftSection?: ReactNode;
-
     rightSection?: ReactNode;
 }
 
@@ -61,21 +57,14 @@ export const Input = forwardRef<
                             "h-11 w-full rounded-xl",
                             "border border-border",
                             "bg-background",
-
                             "px-4",
-
                             leftSection &&
                                 "pl-10",
-
                             rightSection &&
                                 "pr-10",
-
                             "outline-none",
-
                             "transition-colors",
-
                             "focus:border-primary",
-
                             error &&
                                 "border-danger",
 
@@ -83,7 +72,6 @@ export const Input = forwardRef<
                         )}
                         {...props}
                     />
-
                     {rightSection && (
                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
                             {rightSection}

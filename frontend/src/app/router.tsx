@@ -28,7 +28,6 @@ import {
 export const router = createBrowserRouter([
     {
         path: "/",
-
         element: <RootRedirect />,
     },
     {

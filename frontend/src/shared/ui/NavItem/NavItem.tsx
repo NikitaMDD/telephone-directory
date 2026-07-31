@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
-
 import { motion } from "framer-motion";
 
 import { cn } from "@/shared/lib/cn";
-
 import type { NavigationItem } from "@/shared/config/navigation";
 
 interface Props {
@@ -18,15 +16,11 @@ export function NavItem({
     const Icon = item.icon;
 
     return (
-        <NavLink to={item.href}>
+        <NavLink to={item.href} end>
             {({ isActive }) => (
                 <motion.div
-                    whileHover={{
-                        x: 4,
-                    }}
-                    whileTap={{
-                        scale: 0.97,
-                    }}
+                    whileHover={{ x: 4 }}
+                    whileTap={{ scale: 0.97 }}
                     className={cn(
                         "flex h-11 items-center rounded-xl transition-all duration-200",
 

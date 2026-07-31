@@ -55,37 +55,27 @@ export function AuditTable() {
     return (
         <Card className="overflow-hidden">
             <div className="overflow-x-auto">
-
                 <table className="w-full">
-
                     <thead className="bg-surface">
-
                         <tr>
                             <th className="px-6 py-4 text-left">
                                 Дата
                             </th>
-
                             <th className="px-6 py-4 text-left">
                                 Пользователь
                             </th>
-
                             <th className="px-6 py-4 text-left">
                                 Действие
                             </th>
-
                             <th className="px-6 py-4 text-left">
                                 Сущность
                             </th>
-
                             <th className="px-6 py-4 text-left">
                                 ID
                             </th>
                         </tr>
-
                     </thead>
-
                     <tbody>
-
                         {sorted.map(
                             (log) => (
                                 <tr
@@ -99,13 +89,11 @@ export function AuditTable() {
                                             log.createdAt
                                         ).toLocaleString()}
                                     </td>
-
                                     <td className="px-6 py-4">
                                         {log.user
                                             ?.name ??
                                             "System"}
                                     </td>
-
                                     <td className="px-6 py-4">
                                         <span
                                             className={
@@ -123,13 +111,11 @@ export function AuditTable() {
                                             }
                                         </span>
                                     </td>
-
                                     <td className="px-6 py-4">
                                         {
                                             log.entity
                                         }
                                     </td>
-
                                     <td className="px-6 py-4 text-xs text-muted-foreground">
                                         {
                                             log.entityId
@@ -138,11 +124,8 @@ export function AuditTable() {
                                 </tr>
                             )
                         )}
-
                     </tbody>
-
                 </table>
-
             </div>
         </Card>
     );

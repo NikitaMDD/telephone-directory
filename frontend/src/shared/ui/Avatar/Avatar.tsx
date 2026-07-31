@@ -45,11 +45,6 @@ export function Avatar({
                     Администратор
                 </Typography>
             </div>
-
-            <ChevronDown
-                size={16}
-                className="hidden lg:block"
-            />
         </button>
     );
 }

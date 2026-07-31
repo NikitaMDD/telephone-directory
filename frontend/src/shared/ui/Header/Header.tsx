@@ -12,7 +12,7 @@ export function Header({
     onMenuClick,
 }: Props) {
     return (
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-white px-4 lg:px-8">
+        <header className="sticky top-0 z-30 h-[85px] flex items-center justify-between border-b bg-white p-5 lg:px-8">
 
             <div className="flex items-center gap-4">
 

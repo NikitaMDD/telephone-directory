@@ -42,26 +42,7 @@ export function Sidebar({
                     : "hidden lg:flex"
             )}
         >
-            <div className="flex items-center justify-between border-b p-5">
-
-                <motion.div
-                    animate={{
-                        opacity:
-                            collapsed && !mobile
-                                ? 0
-                                : 1,
-
-                        width:
-                            collapsed && !mobile
-                                ? 0
-                                : "auto",
-                    }}
-                    transition={{
-                        duration: 0.2,
-                    }}
-                >
-                    <Brand compact />
-                </motion.div>
+            <div className="flex items-center justify-end border-b p-5">
 
                 {!mobile && (
                     <Button
