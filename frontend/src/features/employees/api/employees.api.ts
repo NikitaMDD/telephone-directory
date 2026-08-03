@@ -34,7 +34,7 @@ export const employeesApi = {
         return api<Employee>(
             `/employees/${id}`,
             {
-                method: "PUT",
+                method: "PATCH",
                 body: dto,
             }
         );

@@ -77,7 +77,6 @@ services:
     networks:
       - telephone-network
 
-
   nginx:
     container_name: telephone-nginx
 
