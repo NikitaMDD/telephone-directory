@@ -36,7 +36,7 @@ export const locationsApi = {
         return api<Location>(
             `/locations/${id}`,
             {
-                method: "PUT",
+                method: "PATCH",
                 body: dto,
             }
         );

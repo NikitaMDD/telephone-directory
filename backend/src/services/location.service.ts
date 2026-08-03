@@ -48,8 +48,6 @@ export class LocationService {
         id: string,
         data: UpdateLocationDto
     ) {
-        await this.getById(id);
-
         const oldLocation =
             await this.getById(id);
 
@@ -68,8 +66,6 @@ export class LocationService {
     }
 
     async remove(id: string) {
-        await this.getById(id);
-
         const oldLocation =
             await this.getById(id);
 

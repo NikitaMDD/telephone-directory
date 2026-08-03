@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+
 import type {
     CreateLocationDto,
     UpdateLocationDto,
@@ -23,6 +24,7 @@ export class LocationRepository {
         return prisma.location.create({
             data: {
                 name: data.name,
+                address: data.address ?? null,
                 sortOrder: data.sortOrder ?? 0,
                 isActive: data.isActive ?? true,
             },
@@ -35,7 +37,12 @@ export class LocationRepository {
     ) {
         return prisma.location.update({
             where: { id },
-            data,
+            data: {
+                name: data.name,
+                address: data.address,
+                sortOrder: data.sortOrder,
+                isActive: data.isActive,
+            },
         });
     }
 
