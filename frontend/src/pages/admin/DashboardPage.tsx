@@ -215,7 +215,7 @@ export function DashboardPage() {
                 </Card>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid gap-6">
 
                 <Card className="p-6">
                     <Typography
@@ -254,111 +254,7 @@ export function DashboardPage() {
                         </ResponsiveContainer>
                     </div>
                 </Card>
-
-                <Card className="p-6">
-                    <Typography
-                        variant="h2"
-                        weight="bold"
-                    >
-                        Роли пользователей
-                    </Typography>
-
-                    <div className="h-80 mt-4">
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <PieChart>
-                                <Pie
-                                    data={
-                                        usersByRole
-                                    }
-                                    dataKey="value"
-                                    nameKey="name"
-                                    outerRadius={100}
-                                >
-                                    {usersByRole.map(
-                                        (
-                                            _,
-                                            index
-                                        ) => (
-                                            <Cell
-                                                key={
-                                                    index
-                                                }
-                                                fill={
-                                                    COLORS[
-                                                        index %
-                                                            COLORS.length
-                                                    ]
-                                                }
-                                            />
-                                        )
-                                    )}
-                                </Pie>
-
-                                <Tooltip />
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </div>
-                </Card>
             </div>
-
-            <Card className="p-6">
-                <Typography
-                    variant="h2"
-                    weight="bold"
-                >
-                    Сводка системы
-                </Typography>
-
-                <div className="grid md:grid-cols-3 gap-6 mt-4">
-
-                    <div>
-                        <Typography
-                            color="secondary"
-                            variant="bodySmall"
-                        >
-                            Активные записи
-                        </Typography>
-
-                        <Typography
-                            variant="h1"
-                        >
-                            {employees.length +
-                                departments.length +
-                                locations.length}
-                        </Typography>
-                    </div>
-
-                    <div>
-                        <Typography
-                            color="secondary"
-                            variant="bodySmall"
-                        >
-                            Система
-                        </Typography>
-
-                        <Typography>
-                            Работает стабильно
-                        </Typography>
-                    </div>
-
-                    <div>
-                        <Typography
-                            color="secondary"
-                            variant="bodySmall"
-                        >
-                            Статус
-                        </Typography>
-
-                        <Typography className="text-green-600">
-                            Онлайн
-                        </Typography>
-                    </div>
-
-                </div>
-            </Card>
 
         </div>
     );

@@ -19,27 +19,48 @@ export function NavItem({
         <NavLink to={item.href} end>
             {({ isActive }) => (
                 <motion.div
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.97 }}
+                    initial={false}
+                    whileHover={{
+                        x: 2,
+                    }}
+                    whileTap={{
+                        scale: 0.98,
+                    }}
+                    transition={{
+                        type: "tween",
+                        duration: 0.15,
+                        ease: "easeOut",
+                    }}
                     className={cn(
-                        "flex h-11 items-center rounded-xl transition-all duration-200",
-
-                        collapsed
-                            ? "justify-center"
-                            : "gap-3 px-4",
+                        "flex h-11 w-full items-center overflow-hidden rounded-xl px-4",
+                        "transition-colors duration-200",
 
                         isActive
                             ? "bg-primary text-white shadow"
                             : "text-text-secondary hover:bg-surface hover:text-text"
                     )}
                 >
-                    <Icon size={20} />
+                    <Icon
+                        size={20}
+                        className="shrink-0"
+                    />
 
-                    {!collapsed && (
-                        <span className="font-medium">
-                            {item.title}
-                        </span>
-                    )}
+                    <motion.span
+                        initial={false}
+                        animate={{
+                            opacity: collapsed ? 0 : 1,
+                            width: collapsed ? 0 : "auto",
+                            marginLeft: collapsed ? 0 : 12,
+                        }}
+                        transition={{
+                            duration: 0.18,
+                            ease: [0.4, 0, 0.2, 1],
+                        }}
+                        aria-hidden={collapsed}
+                        className="block overflow-hidden whitespace-nowrap font-medium"
+                    >
+                        {item.title}
+                    </motion.span>
                 </motion.div>
             )}
         </NavLink>
