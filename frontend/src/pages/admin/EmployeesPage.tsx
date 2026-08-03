@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, X } from "lucide-react";
 
 import { Button } from "@/shared/ui/Button";
 import { Card } from "@/shared/ui/Card";
@@ -55,7 +55,6 @@ export function EmployeesPage() {
 
             </div>
 
-            {/* SEARCH */}
             <Card className="p-5">
 
                 <Input
@@ -64,9 +63,22 @@ export function EmployeesPage() {
                         setSearch(e.target.value)
                     }
                     placeholder="Поиск сотрудников..."
-                    // leftIcon={
-                    //     <Search size={18} />
-                    // }
+                    leftIcon={
+                        <Search
+                            size={18}
+                        />
+                    }
+                    rightIcon={
+                        search ? (
+                            <button
+                                type="button"
+                                onClick={() => setSearch("")}
+                                className="transition-colors hover:text-foreground"
+                            >
+                                <X size={18} />
+                            </button>
+                        ) : null
+                    }
                 />
 
             </Card>

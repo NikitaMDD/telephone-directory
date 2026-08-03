@@ -24,7 +24,6 @@ export function ExportPage() {
     return (
         <div className="space-y-8 p-8">
 
-            {/* HEADER */}
             <div>
                 <Typography
                     variant="h1"
@@ -39,7 +38,6 @@ export function ExportPage() {
                 </Typography>
             </div>
 
-            {/* MAIN EXPORT */}
             <div className="grid gap-6 md:grid-cols-2">
 
                 <Card className="p-6 space-y-4">
@@ -93,7 +91,6 @@ export function ExportPage() {
 
             </div>
 
-            {/* INFO BLOCK */}
             <Card className="p-6">
 
                 <Typography

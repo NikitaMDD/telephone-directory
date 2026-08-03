@@ -14,6 +14,8 @@ interface InputProps
     helperText?: string;
     leftSection?: ReactNode;
     rightSection?: ReactNode;
+    leftIcon?: ReactNode;
+    rightIcon?: ReactNode;
 }
 
 export const Input = forwardRef<
@@ -27,11 +29,17 @@ export const Input = forwardRef<
             helperText,
             leftSection,
             rightSection,
+            leftIcon,
+            rightIcon,
             className,
             ...props
         },
         ref
     ) => {
+        // Объединяем: если передана иконка, используем её, иначе — section
+        const effectiveLeft = leftIcon ?? leftSection;
+        const effectiveRight = rightIcon ?? rightSection;
+
         return (
             <div className="flex flex-col gap-2">
 
@@ -45,9 +53,16 @@ export const Input = forwardRef<
 
                 <div className="relative">
 
-                    {leftSection && (
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                            {leftSection}
+                    {effectiveLeft && (
+                        <div
+                            className={cn(
+                                "pointer-events-none",
+                                "absolute left-3 top-1/2 -translate-y-1/2",
+                                "flex items-center justify-center",
+                                "text-muted-foreground"
+                            )}
+                        >
+                            {effectiveLeft}
                         </div>
                     )}
 
@@ -58,9 +73,9 @@ export const Input = forwardRef<
                             "border border-border",
                             "bg-background",
                             "px-4",
-                            leftSection &&
+                            effectiveLeft &&
                                 "pl-10",
-                            rightSection &&
+                            effectiveRight &&
                                 "pr-10",
                             "outline-none",
                             "transition-colors",
@@ -72,9 +87,16 @@ export const Input = forwardRef<
                         )}
                         {...props}
                     />
-                    {rightSection && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                            {rightSection}
+
+                    {effectiveRight && (
+                        <div
+                            className={cn(
+                                "absolute right-3 top-1/2 -translate-y-1/2",
+                                "flex items-center justify-center",
+                                "text-muted-foreground"
+                            )}
+                        >
+                            {effectiveRight}
                         </div>
                     )}
                 </div>

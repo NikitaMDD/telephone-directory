@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Plus } from "lucide-react";
+import { Plus, Search, X } from "lucide-react";
 
 import { Button } from "@/shared/ui/Button";
 import { Card } from "@/shared/ui/Card";
@@ -76,6 +76,22 @@ export function UsersPage() {
                         )
                     }
                     placeholder="Поиск пользователя..."
+                    leftIcon={
+                        <Search
+                            size={18}
+                        />
+                    }
+                    rightIcon={
+                        search ? (
+                            <button
+                                type="button"
+                                onClick={() => setSearch("")}
+                                className="transition-colors hover:text-foreground"
+                            >
+                                <X size={18} />
+                            </button>
+                        ) : null
+                    }
                 />
 
             </Card>
