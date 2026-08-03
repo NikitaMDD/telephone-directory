@@ -153,17 +153,17 @@ ${ROLE_LABELS[user.role]}
                                                     user
                                                 )
                                             }
-                                            onDelete={() => {
-                                                if (
-                                                    window.confirm(
-                                                        `Удалить пользователя "${user.name}"?`
-                                                    )
-                                                ) {
-                                                    deleteMutation.mutate(
-                                                        user.id
-                                                    );
-                                                }
-                                            }}
+                                            // onDelete={() => {
+                                            //     if (
+                                            //         window.confirm(
+                                            //             `Удалить пользователя "${user.name}"?`
+                                            //         )
+                                            //     ) {
+                                            //         deleteMutation.mutate(
+                                            //             user.id
+                                            //         );
+                                            //     }
+                                            // }}
                                         />
                                     </td>
 

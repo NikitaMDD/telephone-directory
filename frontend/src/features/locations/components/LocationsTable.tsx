@@ -1,16 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/shared/ui/Card";
 import { EmptyState } from "@/shared/ui/EmptyState";
 import { Loader } from "@/shared/ui/Loader";
 import { Typography } from "@/shared/ui/Typography";
 
-import {
-    useDeleteLocation,
-    useLocations,
-} from "../hooks/useLocations";
+import { useLocations } from "../hooks/useLocations";
 
 import { LocationActions } from "./LocationActions";
+import { LocationDeleteDialog } from "./LocationDeleteDialog";
 
 import type { Location } from "../types";
 
@@ -31,8 +29,13 @@ export function LocationsTable({
         isError,
     } = useLocations();
 
-    const deleteMutation =
-        useDeleteLocation();
+    const [deleteOpen, setDeleteOpen] =
+        useState(false);
+
+    const [
+        locationToDelete,
+        setLocationToDelete,
+    ] = useState<Location>();
 
     const filteredLocations =
         useMemo(() => {
@@ -49,6 +52,17 @@ ${location.address ?? ""}
                         .includes(value)
             );
         }, [locations, search]);
+
+    function handleOpenDelete(
+        location: Location
+    ) {
+        setLocationToDelete(location);
+        setDeleteOpen(true);
+    }
+
+    function handleCloseDelete() {
+        setDeleteOpen(false);
+    }
 
     if (isPending) {
         return (
@@ -80,90 +94,73 @@ ${location.address ?? ""}
     }
 
     return (
-        <Card className="overflow-hidden">
-            <div className="overflow-x-auto">
+        <>
+            <Card className="overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead className="bg-surface">
+                            <tr>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Название
+                                </th>
 
-                <table className="w-full">
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Адрес
+                                </th>
 
-                    <thead className="bg-surface">
+                                <th className="w-24" />
+                            </tr>
+                        </thead>
 
-                        <tr>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Название
-                            </th>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Адрес
-                            </th>
-
-                            <th className="w-24" />
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {filteredLocations.map(
-                            (location) => (
-                                <tr
-                                    key={
-                                        location.id
-                                    }
-                                    className="border-t transition-colors hover:bg-surface"
-                                >
-                                    <td className="px-6 py-4">
-
-                                        <Typography
-                                            weight="medium"
-                                        >
-                                            {
-                                                location.name
-                                            }
-                                        </Typography>
-
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        {location.address ||
-                                            "-"}
-
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        <LocationActions
-                                            onEdit={() =>
-                                                onEdit(
-                                                    location
-                                                )
-                                            }
-                                            onDelete={() => {
-                                                if (
-                                                    window.confirm(
-                                                        `Удалить корпус "${location.name}"?`
-                                                    )
-                                                ) {
-                                                    deleteMutation.mutate(
-                                                        location.id
-                                                    );
+                        <tbody>
+                            {filteredLocations.map(
+                                (location) => (
+                                    <tr
+                                        key={
+                                            location.id
+                                        }
+                                        className="border-t transition-colors hover:bg-surface"
+                                    >
+                                        <td className="px-6 py-4">
+                                            <Typography weight="medium">
+                                                {
+                                                    location.name
                                                 }
-                                            }}
-                                        />
+                                            </Typography>
+                                        </td>
 
-                                    </td>
+                                        <td className="px-6 py-4">
+                                            {location.address ||
+                                                "-"}
+                                        </td>
 
-                                </tr>
-                            )
-                        )}
+                                        <td className="px-6 py-4">
+                                            <LocationActions
+                                                onEdit={() =>
+                                                    onEdit(
+                                                        location
+                                                    )
+                                                }
+                                                onDelete={() =>
+                                                    handleOpenDelete(
+                                                        location
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </Card>
 
-                    </tbody>
-
-                </table>
-
-            </div>
-        </Card>
+            <LocationDeleteDialog
+                open={deleteOpen}
+                location={locationToDelete}
+                onClose={handleCloseDelete}
+            />
+        </>
     );
 }

@@ -7,12 +7,12 @@ import { Button } from "@/shared/ui/Button";
 
 interface Props {
     onEdit(): void;
-    onDelete(): void;
+    // onDelete(): void;
 }
 
 export function UserActions({
     onEdit,
-    onDelete,
+    // onDelete,
 }: Props) {
     return (
         <div className="flex items-center justify-end gap-2">
@@ -24,13 +24,13 @@ export function UserActions({
                 <Pencil size={18} />
             </Button>
 
-            <Button
+            {/* <Button
                 size="icon"
                 variant="ghost"
                 onClick={onDelete}
             >
                 <Trash2 size={18} />
-            </Button>
+            </Button> */}
         </div>
     );
 }

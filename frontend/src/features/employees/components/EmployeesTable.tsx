@@ -1,16 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/shared/ui/Card";
 import { Loader } from "@/shared/ui/Loader";
 import { Typography } from "@/shared/ui/Typography";
 import { EmptyState } from "@/shared/ui/EmptyState";
 
-import {
-    useDeleteEmployee,
-    useEmployees,
-} from "../hooks/useEmployees";
+import { useEmployees } from "../hooks/useEmployees";
 
 import { EmployeeActions } from "./EmployeeActions";
+import { EmployeeDeleteDialog } from "./EmployeeDeleteDialog";
 
 import type { Employee } from "../types";
 
@@ -29,8 +27,13 @@ export function EmployeesTable({
         isError,
     } = useEmployees();
 
-    const deleteMutation =
-        useDeleteEmployee();
+    const [deleteOpen, setDeleteOpen] =
+        useState(false);
+
+    const [
+        employeeToDelete,
+        setEmployeeToDelete,
+    ] = useState<Employee>();
 
     const filteredEmployees =
         useMemo(() => {
@@ -41,15 +44,15 @@ export function EmployeesTable({
                 (employee) => {
                     const searchable =
                         `
-${employee.lastName}
-${employee.firstName}
-${employee.middleName ?? ""}
-${employee.position}
-${employee.internalPhone ?? ""}
-${employee.cityPhone ?? ""}
-${employee.email ?? ""}
-${employee.department.name}
-`
+                            ${employee.lastName}
+                            ${employee.firstName}
+                            ${employee.middleName ?? ""}
+                            ${employee.position}
+                            ${employee.internalPhone ?? ""}
+                            ${employee.cityPhone ?? ""}
+                            ${employee.email ?? ""}
+                            ${employee.department.name}
+                        `
                             .toLowerCase();
 
                     return searchable.includes(
@@ -58,6 +61,17 @@ ${employee.department.name}
                 }
             );
         }, [employees, search]);
+
+    function handleOpenDelete(
+        employee: Employee
+    ) {
+        setEmployeeToDelete(employee);
+        setDeleteOpen(true);
+    }
+
+    function handleCloseDelete() {
+        setDeleteOpen(false);
+    }
 
     if (isPending) {
         return (
@@ -89,124 +103,126 @@ ${employee.department.name}
     }
 
     return (
-        <Card className="overflow-hidden">
+        <>
+            <Card className="overflow-hidden">
 
-            <div className="overflow-x-auto">
+                <div className="overflow-x-auto">
 
-                <table className="w-full">
+                    <table className="w-full">
 
-                    <thead className="bg-surface">
+                        <thead className="bg-surface">
 
-                        <tr>
+                            <tr>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                ФИО
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    ФИО
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Должность
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Должность
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Подразделение
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Подразделение
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Телефон
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Телефон
+                                </th>
 
-                            <th className="w-20" />
+                                <th className="w-20" />
 
-                        </tr>
+                            </tr>
 
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
 
-                        {filteredEmployees.map(
-                            (
-                                employee
-                            ) => (
-                                <tr
-                                    key={
-                                        employee.id
-                                    }
-                                    className="border-t transition-colors hover:bg-surface"
-                                >
-                                    <td className="px-6 py-4">
-
-                                        <Typography
-                                            weight="medium"
-                                        >
-                                            {
-                                                employee.lastName
-                                            }{" "}
-                                            {
-                                                employee.firstName
-                                            }{" "}
-                                            {employee.middleName}
-                                        </Typography>
-
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        {
-                                            employee.position
+                            {filteredEmployees.map(
+                                (
+                                    employee
+                                ) => (
+                                    <tr
+                                        key={
+                                            employee.id
                                         }
+                                        className="border-t transition-colors hover:bg-surface"
+                                    >
+                                        <td className="px-6 py-4">
 
-                                    </td>
+                                            <Typography
+                                                weight="medium"
+                                            >
+                                                {
+                                                    employee.lastName
+                                                }{" "}
+                                                {
+                                                    employee.firstName
+                                                }{" "}
+                                                {employee.middleName}
+                                            </Typography>
 
-                                    <td className="px-6 py-4">
+                                        </td>
 
-                                        {
-                                            employee
-                                                .department
-                                                .name
-                                        }
+                                        <td className="px-6 py-4">
 
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        {employee.internalPhone ??
-                                            employee.cityPhone ??
-                                            "-"}
-
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        <EmployeeActions
-                                            onEdit={() =>
-                                                onEdit(
-                                                    employee
-                                                )
+                                            {
+                                                employee.position
                                             }
-                                            onDelete={() => {
-                                                if (
-                                                    window.confirm(
-                                                        `Удалить сотрудника "${employee.lastName} ${employee.firstName}"?`
+
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            {
+                                                employee
+                                                    .department
+                                                    .name
+                                            }
+
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            {employee.internalPhone ??
+                                                employee.cityPhone ??
+                                                "-"}
+
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            <EmployeeActions
+                                                onEdit={() =>
+                                                    onEdit(
+                                                        employee
                                                     )
-                                                ) {
-                                                    deleteMutation.mutate(
-                                                        employee.id
-                                                    );
                                                 }
-                                            }}
-                                        />
+                                                onDelete={() =>
+                                                    handleOpenDelete(
+                                                        employee
+                                                    )
+                                                }
+                                            />
 
-                                    </td>
-                                </tr>
-                            )
-                        )}
+                                        </td>
+                                    </tr>
+                                )
+                            )}
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
-            </div>
+                </div>
 
-        </Card>
+            </Card>
+
+            <EmployeeDeleteDialog
+                open={deleteOpen}
+                employee={employeeToDelete}
+                onClose={handleCloseDelete}
+            />
+        </>
     );
 }

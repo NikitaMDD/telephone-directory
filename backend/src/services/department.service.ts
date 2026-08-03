@@ -126,6 +126,28 @@ export class DepartmentService {
         const oldDepartment =
             await this.getById(id);
 
+        const employeesCount = await prisma.employee.count({
+            where: { departmentId: id },
+        });
+
+        if (employeesCount > 0) {
+            throw new HttpError(
+                400,
+                `Нельзя удалить подразделение "${oldDepartment.name}", так как в нем числятся сотрудники (${employeesCount} чел.).`
+            );
+        }
+
+        const childrenCount = await prisma.department.count({
+            where: { parentId: id },
+        });
+
+        if (childrenCount > 0) {
+            throw new HttpError(
+                400,
+                `Нельзя удалить подразделение "${oldDepartment.name}", так как у него есть дочерние подразделения (${childrenCount} шт.).`
+            );
+        }
+
         await departmentRepository.delete(id);
 
         await auditService.create({

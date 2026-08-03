@@ -1,16 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Card } from "@/shared/ui/Card";
 import { EmptyState } from "@/shared/ui/EmptyState";
 import { Loader } from "@/shared/ui/Loader";
 import { Typography } from "@/shared/ui/Typography";
 
-import {
-    useDeleteDepartment,
-    useDepartments,
-} from "../hooks/useDepartments";
+import { useDepartments } from "../hooks/useDepartments";
 
 import { DepartmentActions } from "./DepartmentActions";
+import { DepartmentDeleteDialog } from "./DepartmentDeleteDialog";
 
 import type { Department } from "../types";
 
@@ -31,8 +29,13 @@ export function DepartmentsTable({
         isError,
     } = useDepartments();
 
-    const deleteMutation =
-        useDeleteDepartment();
+    const [deleteOpen, setDeleteOpen] =
+        useState(false);
+
+    const [
+        departmentToDelete,
+        setDepartmentToDelete,
+    ] = useState<Department>();
 
     const filteredDepartments =
         useMemo(() => {
@@ -59,6 +62,17 @@ ${department.parent?.name ?? ""}
                 }
             );
         }, [departments, search]);
+
+    function handleOpenDelete(
+        department: Department
+    ) {
+        setDepartmentToDelete(department);
+        setDeleteOpen(true);
+    }
+
+    function handleCloseDelete() {
+        setDeleteOpen(false);
+    }
 
     if (isPending) {
         return (
@@ -90,127 +104,131 @@ ${department.parent?.name ?? ""}
     }
 
     return (
-        <Card className="overflow-hidden">
-            <div className="overflow-x-auto">
+        <>
+            <Card className="overflow-hidden">
+                <div className="overflow-x-auto">
 
-                <table className="w-full">
+                    <table className="w-full">
 
-                    <thead className="bg-surface">
+                        <thead className="bg-surface">
 
-                        <tr>
+                            <tr>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Название
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Название
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Тип
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Тип
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Корпус
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Корпус
+                                </th>
 
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Родительское подразделение
-                            </th>
+                                <th className="px-6 py-4 text-left font-semibold">
+                                    Родительское подразделение
+                                </th>
 
-                            <th className="w-24" />
+                                <th className="w-24" />
 
-                        </tr>
+                            </tr>
 
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
 
-                        {filteredDepartments.map(
-                            (
-                                department
-                            ) => (
-                                <tr
-                                    key={
-                                        department.id
-                                    }
-                                    className="border-t transition-colors hover:bg-surface"
-                                >
-                                    <td className="px-6 py-4">
+                            {filteredDepartments.map(
+                                (
+                                    department
+                                ) => (
+                                    <tr
+                                        key={
+                                            department.id
+                                        }
+                                        className="border-t transition-colors hover:bg-surface"
+                                    >
+                                        <td className="px-6 py-4">
 
-                                        <Typography
-                                            weight="medium"
-                                        >
-                                            {
-                                                department.name
-                                            }
-                                        </Typography>
-
-                                        {department.abbreviation && (
                                             <Typography
-                                                variant="caption"
-                                                color="secondary"
+                                                weight="medium"
                                             >
                                                 {
-                                                    department.abbreviation
+                                                    department.name
                                                 }
                                             </Typography>
-                                        )}
 
-                                    </td>
+                                            {department.abbreviation && (
+                                                <Typography
+                                                    variant="caption"
+                                                    color="secondary"
+                                                >
+                                                    {
+                                                        department.abbreviation
+                                                    }
+                                                </Typography>
+                                            )}
 
-                                    <td className="px-6 py-4">
-                                        {
-                                            department.type
-                                        }
-                                    </td>
+                                        </td>
 
-                                    <td className="px-6 py-4">
-                                        {
-                                            department
-                                                .location
-                                                .name
-                                        }
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        {department
-                                            .parent
-                                            ?.name ??
-                                            "-"}
-
-                                    </td>
-
-                                    <td className="px-6 py-4">
-
-                                        <DepartmentActions
-                                            onEdit={() =>
-                                                onEdit(
-                                                    department
-                                                )
+                                        <td className="px-6 py-4">
+                                            {
+                                                department.type
                                             }
-                                            onDelete={() => {
-                                                if (
-                                                    window.confirm(
-                                                        `Удалить подразделение "${department.name}"?`
+                                        </td>
+
+                                        <td className="px-6 py-4">
+                                            {
+                                                department
+                                                    .location
+                                                    .name
+                                            }
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            {department
+                                                .parent
+                                                ?.name ??
+                                                "-"}
+
+                                        </td>
+
+                                        <td className="px-6 py-4">
+
+                                            <DepartmentActions
+                                                onEdit={() =>
+                                                    onEdit(
+                                                        department
                                                     )
-                                                ) {
-                                                    deleteMutation.mutate(
-                                                        department.id
-                                                    );
                                                 }
-                                            }}
-                                        />
+                                                onDelete={() =>
+                                                    handleOpenDelete(
+                                                        department
+                                                    )
+                                                }
+                                            />
 
-                                    </td>
+                                        </td>
 
-                                </tr>
-                            )
-                        )}
+                                    </tr>
+                                )
+                            )}
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
-            </div>
-        </Card>
+                </div>
+            </Card>
+
+            <DepartmentDeleteDialog
+                open={deleteOpen}
+                department={
+                    departmentToDelete
+                }
+                onClose={handleCloseDelete}
+            />
+        </>
     );
 }

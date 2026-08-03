@@ -34,7 +34,7 @@ export const usersApi = {
         return api<User>(
             `/users/${id}`,
             {
-                method: "PUT",
+                method: "PATCH",
                 body: dto,
             }
         );
