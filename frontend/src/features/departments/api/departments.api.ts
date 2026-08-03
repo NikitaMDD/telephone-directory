@@ -34,7 +34,7 @@ export const departmentsApi = {
         return api<Department>(
             `/departments/${id}`,
             {
-                method: "PUT",
+                method: "PATCH",
                 body: dto,
             }
         );

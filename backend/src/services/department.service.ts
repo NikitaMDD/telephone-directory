@@ -34,11 +34,15 @@ export class DepartmentService {
     }
 
     async create(data: CreateDepartmentDto) {
+        const payload: CreateDepartmentDto = {
+            ...data,
+            parentId: data.parentId || undefined,
+        };
 
         const location =
             await prisma.location.findUnique({
                 where: {
-                    id: data.locationId,
+                    id: payload.locationId,
                 },
             });
 
@@ -49,11 +53,10 @@ export class DepartmentService {
             );
         }
 
-        if (data.parentId) {
-
+        if (payload.parentId) {
             const parent =
                 await departmentRepository.findById(
-                    data.parentId
+                    payload.parentId
                 );
 
             if (!parent) {
@@ -65,7 +68,7 @@ export class DepartmentService {
         }
 
         const department =
-            await departmentRepository.create(data);
+            await departmentRepository.create(payload);
 
         await auditService.create({
             action: "CREATE",
@@ -81,46 +84,32 @@ export class DepartmentService {
         id: string,
         data: UpdateDepartmentDto
     ) {
+        const payload: UpdateDepartmentDto = {
+            ...data,
+            parentId: data.parentId || null,
+        };
 
-        await this.getById(id);
+        const oldDepartment = await this.getById(id);
 
-        if (data.locationId) {
-
-            const location =
-                await prisma.location.findUnique({
-                    where: {
-                        id: data.locationId,
-                    },
-                });
+        if (payload.locationId) {
+            const location = await prisma.location.findUnique({
+                where: { id: payload.locationId },
+            });
 
             if (!location) {
-                throw new HttpError(
-                    404,
-                    "Location not found"
-                );
+                throw new HttpError(404, "Location not found");
             }
         }
 
-        if (data.parentId) {
-
-            const parent =
-                await departmentRepository.findById(
-                    data.parentId
-                );
+        if (payload.parentId) {
+            const parent = await departmentRepository.findById(payload.parentId);
 
             if (!parent) {
-                throw new HttpError(
-                    404,
-                    "Parent department not found"
-                );
+                throw new HttpError(404, "Parent department not found");
             }
         }
 
-        const oldDepartment =
-            await this.getById(id);
-
-        const updated =
-            await departmentRepository.update(id, data);
+        const updated = await departmentRepository.update(id, payload);
 
         await auditService.create({
             action: "UPDATE",
