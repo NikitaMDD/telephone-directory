@@ -6,8 +6,36 @@ import {
     ChevronUp,
 } from "lucide-react";
 
+import {
+    useEffect,
+    useRef,
+} from "react";
+
 import { Typography } from "@/shared/ui/Typography";
 import { cn } from "@/shared/lib/cn";
+
+let openSelectCount = 0;
+let removeSelectFlagTimeout: ReturnType<typeof setTimeout> | undefined;
+
+function setSelectOpenFlag(open: boolean) {
+    if (removeSelectFlagTimeout) {
+        clearTimeout(removeSelectFlagTimeout);
+    }
+
+    if (open) {
+        openSelectCount += 1;
+        document.body.setAttribute("data-select-open", "true");
+        return;
+    }
+
+    openSelectCount = Math.max(0, openSelectCount - 1);
+
+    if (openSelectCount === 0) {
+        removeSelectFlagTimeout = setTimeout(() => {
+            document.body.removeAttribute("data-select-open");
+        }, 250);
+    }
+}
 
 interface Props<T> {
     label?: string;
@@ -32,6 +60,26 @@ export function Select<T>({
     getLabel,
     getValue,
 }: Props<T>) {
+    const isOpenRef = useRef(false);
+
+    const handleOpenChange = (nextOpen: boolean) => {
+        if (isOpenRef.current === nextOpen) {
+            return;
+        }
+
+        isOpenRef.current = nextOpen;
+        setSelectOpenFlag(nextOpen);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (isOpenRef.current) {
+                isOpenRef.current = false;
+                setSelectOpenFlag(false);
+            }
+        };
+    }, []);
+
     return (
         <div className="space-y-2">
 
@@ -48,6 +96,7 @@ export function Select<T>({
                 value={value}
                 disabled={disabled}
                 onValueChange={onValueChange}
+                onOpenChange={handleOpenChange}
             >
 
                 <RadixSelect.Trigger
@@ -65,11 +114,7 @@ export function Select<T>({
                     />
 
                     <RadixSelect.Icon>
-
-                        <ChevronDown
-                            size={18}
-                        />
-
+                        <ChevronDown size={18} />
                     </RadixSelect.Icon>
 
                 </RadixSelect.Trigger>
@@ -78,52 +123,53 @@ export function Select<T>({
 
                     <RadixSelect.Content
                         position="popper"
-                        className="z-50 overflow-hidden rounded-xl border bg-white shadow-xl"
+                        data-select-dropdown="true"
+                        className="
+                            z-[100]
+                            pointer-events-auto
+                            overflow-hidden
+                            rounded-xl
+                            border
+                            bg-white
+                            shadow-xl
+                        "
                     >
 
-                        <RadixSelect.ScrollUpButton
-                            className="flex justify-center py-1"
-                        >
-                            <ChevronUp
-                                size={16}
-                            />
+                        <RadixSelect.ScrollUpButton className="flex justify-center py-1">
+                            <ChevronUp size={16} />
                         </RadixSelect.ScrollUpButton>
 
                         <RadixSelect.Viewport className="p-2">
 
-                            {items.map(
-                                (item) => (
-                                    <RadixSelect.Item
-                                        key={getValue(
-                                            item
-                                        )}
-                                        value={getValue(
-                                            item
-                                        )}
-                                        className="relative flex cursor-pointer items-center rounded-lg py-2 pl-8 pr-3 outline-none hover:bg-surface data-[state=checked]:bg-primary/10"
-                                    >
+                            {items.map((item) => (
+                                <RadixSelect.Item
+                                    key={getValue(item)}
+                                    value={getValue(item)}
+                                    className="
+                                        relative
+                                        flex
+                                        cursor-pointer
+                                        items-center
+                                        rounded-lg
+                                        py-2
+                                        pl-8
+                                        pr-3
+                                        outline-none
+                                        hover:bg-surface
+                                        data-[state=checked]:bg-primary/10
+                                    "
+                                >
 
-                                        <RadixSelect.ItemIndicator
-                                            className="absolute left-2"
-                                        >
-                                            <Check
-                                                size={
-                                                    16
-                                                }
-                                            />
-                                        </RadixSelect.ItemIndicator>
+                                    <RadixSelect.ItemIndicator className="absolute left-2">
+                                        <Check size={16} />
+                                    </RadixSelect.ItemIndicator>
 
-                                        <RadixSelect.ItemText>
+                                    <RadixSelect.ItemText>
+                                        {getLabel(item)}
+                                    </RadixSelect.ItemText>
 
-                                            {getLabel(
-                                                item
-                                            )}
-
-                                        </RadixSelect.ItemText>
-
-                                    </RadixSelect.Item>
-                                )
-                            )}
+                                </RadixSelect.Item>
+                            ))}
 
                         </RadixSelect.Viewport>
 

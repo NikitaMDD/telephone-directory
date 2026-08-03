@@ -19,6 +19,38 @@ function Root({
     onOpenChange,
     children,
 }: RootProps) {
+    const preventCloseIfSelectOpen = (event: any) => {
+        const originalEvent = event?.detail?.originalEvent;
+
+        const target =
+            originalEvent?.composedPath?.()[0] ??
+            originalEvent?.target ??
+            event?.target;
+
+        const selectOpenByBodyFlag =
+            document.body.hasAttribute("data-select-open");
+
+        const selectOpenByDropdown =
+            document.querySelector("[data-select-dropdown]") !== null;
+
+        const clickInsideSelect =
+            target instanceof Element &&
+            target.closest("[data-select-dropdown]") !== null;
+
+        // console.log("selectOpenByBodyFlag: ", selectOpenByBodyFlag);
+        // console.log("selectOpenByDropdown: ", selectOpenByDropdown);
+        // console.log("clickInsideSelect: ", clickInsideSelect);
+        // console.log("target: ", target);
+
+        if (
+            selectOpenByBodyFlag ||
+            selectOpenByDropdown ||
+            clickInsideSelect
+        ) {
+            event.preventDefault();
+        }
+    };
+
     return (
         <RadixDialog.Root
             open={open}
@@ -30,7 +62,13 @@ function Root({
 
                         <RadixDialog.Overlay asChild>
                             <motion.div
-                                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+                                className="
+                                    fixed
+                                    inset-0
+                                    z-50
+                                    bg-black/50
+                                    backdrop-blur-sm
+                                "
                                 initial={{
                                     opacity: 0,
                                 }}
@@ -43,9 +81,24 @@ function Root({
                             />
                         </RadixDialog.Overlay>
 
-                        <RadixDialog.Content asChild>
+                        <div
+                            className="
+                                fixed
+                                inset-0
+                                z-50
+                                flex
+                                items-center
+                                justify-center
+                                p-4
+                                pointer-events-none
+                            "
+                        >
 
-                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <RadixDialog.Content
+                                asChild
+                                onPointerDownOutside={preventCloseIfSelectOpen}
+                                onInteractOutside={preventCloseIfSelectOpen}
+                            >
 
                                 <motion.div
                                     initial={{
@@ -76,11 +129,11 @@ function Root({
                                         rounded-2xl
                                         bg-white
                                         shadow-2xl
+                                        pointer-events-auto
                                     "
                                 >
 
                                     <RadixDialog.Close asChild>
-
                                         <Button
                                             size="icon"
                                             variant="ghost"
@@ -88,16 +141,15 @@ function Root({
                                         >
                                             <X size={18} />
                                         </Button>
-
                                     </RadixDialog.Close>
 
                                     {children}
 
                                 </motion.div>
 
-                            </div>
+                            </RadixDialog.Content>
 
-                        </RadixDialog.Content>
+                        </div>
 
                     </RadixDialog.Portal>
                 )}
