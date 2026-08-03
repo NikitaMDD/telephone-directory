@@ -12,4 +12,10 @@ router.get(
     exportController.pdf
 );
 
+router.get(
+    "/docx",
+    authMiddleware,
+    exportController.docx
+);
+
 export default router;

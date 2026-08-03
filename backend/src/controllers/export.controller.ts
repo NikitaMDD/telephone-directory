@@ -13,7 +13,7 @@ export class ExportController {
         next: NextFunction
     ) => {
         try {
-            const pdf =
+            const buffer =
                 await exportService.generatePdf();
 
             res.setHeader(
@@ -26,7 +26,32 @@ export class ExportController {
                 'attachment; filename="telephone-directory.pdf"'
             );
 
-            pdf.pipe(res);
+            res.send(buffer);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    docx = async (
+        _req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const buffer =
+                await exportService.generateDocx();
+
+            res.setHeader(
+                "Content-Type",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            );
+
+            res.setHeader(
+                "Content-Disposition",
+                'attachment; filename="telephone-directory.docx"'
+            );
+
+            res.send(buffer);
         } catch (error) {
             next(error);
         }

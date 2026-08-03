@@ -1,13 +1,34 @@
+import { env } from "@/shared/config/env";
+
+async function fetchBlob(
+    endpoint: string
+): Promise<Blob> {
+    const response = await fetch(
+        `${env.apiUrl}${endpoint}`,
+        {
+            credentials: "include",
+        }
+    );
+
+    if (!response.ok) {
+        const error = await response
+            .json()
+            .catch(() => ({
+                message: `Ошибка сервера (${response.status})`,
+            }));
+
+        throw new Error(error.message);
+    }
+
+    return response.blob();
+}
+
 export const exportApi = {
     exportPdf() {
-        return fetch("/api/export/pdf", {
-            method: "GET",
-        }).then((r) => r.blob());
+        return fetchBlob("/export/pdf");
     },
 
     exportDocx() {
-        return fetch("/api/export/docx", {
-            method: "GET",
-        }).then((r) => r.blob());
+        return fetchBlob("/export/docx");
     },
 };
