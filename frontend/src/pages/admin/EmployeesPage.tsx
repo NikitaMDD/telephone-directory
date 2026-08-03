@@ -83,13 +83,11 @@ export function EmployeesPage() {
 
             </Card>
 
-            {/* TABLE */}
             <EmployeesTable
                 search={search}
                 onEdit={handleEdit}
             />
 
-            {/* DIALOG */}
             <EmployeeDialog
                 open={open}
                 employee={selectedEmployee}

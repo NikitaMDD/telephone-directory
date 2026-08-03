@@ -2,6 +2,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/shared/ui/Input";
+import { MaskedInput } from "@/shared/ui/MaskedInput";
+
 import { Select } from "@/shared/ui/Select";
 
 import {
@@ -200,17 +202,37 @@ export function EmployeeForm({
                 )}
             />
 
-            <Input
-                label="Внутренний телефон"
-                {...register(
-                    "internalPhone"
+            <Controller
+                name="internalPhone"
+                control={control}
+                render={({ field: { ref, onChange, value, ...fieldProps } }) => (
+                    <MaskedInput
+                        label="Внутренний телефон"
+                        mask="+7 (000) 000-00-00" 
+                        unmask={false} 
+                        {...fieldProps}
+                        onAccept={(val) => onChange(val)} 
+                        value={value ?? ""}
+                        ref={ref}
+                        error={errors.internalPhone?.message}
+                    />
                 )}
             />
 
-            <Input
-                label="Городской телефон"
-                {...register(
-                    "cityPhone"
+            <Controller
+                name="cityPhone"
+                control={control}
+                render={({ field: { ref, onChange, value, ...fieldProps } }) => (
+                    <MaskedInput
+                        label="Городской телефон"
+                        mask="+7 (000) 000-00-00"
+                        unmask={false}
+                        {...fieldProps}
+                        onAccept={(val) => onChange(val)}
+                        value={value ?? ""}
+                        ref={ref}
+                        error={errors.cityPhone?.message}
+                    />
                 )}
             />
 
