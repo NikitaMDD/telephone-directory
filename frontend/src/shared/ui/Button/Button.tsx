@@ -81,7 +81,7 @@ export const Button = forwardRef<
                         />
                     )}
                 </AnimatePresence>
-                <span>{children}</span>
+                {children}
             </motion.button>
         );
     }

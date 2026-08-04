@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
@@ -16,19 +16,13 @@ import { LogsPage } from "@/pages/admin/LogsPage";
 import { ExportPage } from "@/pages/admin/ExportPage";
 import { Guideline } from "@/pages/Guideline/Guideline";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import {RootRedirect} from "@/pages/RootRedirect"
-import {GuestRoute} from "@/shared/auth"
 
-import { ProtectedRoute } from "@/shared/auth";
-
-import {
-    Navigate,
-} from "react-router-dom";
+import { GuestRoute, ProtectedRoute } from "@/shared/auth";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <RootRedirect />,
+        element: <Navigate to="/directory" replace />,
     },
     {
         path: "/directory",
@@ -91,18 +85,14 @@ export const router = createBrowserRouter([
                 path: "export",
                 element: <ExportPage />,
             },
-            // {
-            //     path: "/guideline",
-            //     element: <Guideline />,
-            // }
         ],
+    },
+    {
+        path: "/guideline",
+        element: <Guideline />,
     },
     {
         path: "*",
         element: <NotFoundPage />,
     },
-    {
-        path: "/guideline",
-        element: <Guideline />,
-    }
 ]);
