@@ -6,16 +6,7 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.get(
-    "/pdf",
-    authMiddleware,
-    exportController.pdf
-);
-
-router.get(
-    "/docx",
-    authMiddleware,
-    exportController.docx
-);
+router.get("/pdf", exportController.pdf);
+router.get("/docx", exportController.docx);
 
 export default router;

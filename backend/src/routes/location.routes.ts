@@ -7,37 +7,11 @@ import { roleMiddleware } from "../middleware/role.middleware.js";
 
 const router = Router();
 
-router.get(
-    "/",
-    authMiddleware,
-    locationController.getAll
-);
+router.get("/", locationController.getAll);
+router.get("/:id", locationController.getById);
 
-router.get(
-    "/:id",
-    authMiddleware,
-    locationController.getById
-);
-
-router.post(
-    "/",
-    authMiddleware,
-    roleMiddleware("ADMIN"),
-    locationController.create
-);
-
-router.patch(
-    "/:id",
-    authMiddleware,
-    roleMiddleware("ADMIN"),
-    locationController.update
-);
-
-router.delete(
-    "/:id",
-    authMiddleware,
-    roleMiddleware("ADMIN"),
-    locationController.remove
-);
+router.post("/", authMiddleware, roleMiddleware("ADMIN"), locationController.create);
+router.patch("/:id", authMiddleware, roleMiddleware("ADMIN"), locationController.update);
+router.delete("/:id", authMiddleware, roleMiddleware("ADMIN"), locationController.remove);
 
 export default router;
