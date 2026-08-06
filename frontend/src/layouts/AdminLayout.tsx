@@ -17,7 +17,7 @@ export function AdminLayout() {
         useState(false);
 
     return (
-        <div className="flex h-screen bg-background">
+        <div className="flex h-screen ">
             <Sidebar
                 collapsed={collapsed}
                 onCollapse={() =>
@@ -38,11 +38,11 @@ export function AdminLayout() {
                 }
             />
             <div className="flex min-w-0 flex-1 flex-col">
-                <Header
+                {/* <Header
                     onMenuClick={() =>
                         setMobileOpen(true)
                     }
-                />
+                /> */}
                 <main className="flex-1 overflow-y-auto">
                     <AnimatePresence mode="wait">
                         <motion.div

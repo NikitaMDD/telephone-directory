@@ -9,13 +9,62 @@ body,
 #root {
     width: 100%;
     min-height: 100%;
-
+    background-image: url('/src/assets/TGPU-Tolstogo-VK_cover-white-01.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 body {
     margin: 0;
-    background: #f8f8f6;
+    background: #fff;
     color: #111;
     font-family: "ALS Granate", sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+.glass-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/20;
+  @apply bg-gradient-to-br from-white/35 via-white/15 to-white/10;
+  @apply backdrop-blur-[10px] backdrop-saturate-[180%];
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-sidebar {
+    @apply relative overflow-hidden;
+
+    @apply border-r border-white/20;
+
+    @apply bg-gradient-to-b
+        from-white/20
+        via-white/10
+        to-white/5;
+
+    @apply backdrop-blur-[10px]
+        backdrop-saturate-[180%];
+
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+.glass-sidebar::before {
+    content: "";
+
+    @apply absolute inset-0 pointer-events-none;
+
+    @apply bg-gradient-to-r
+        from-white/20
+        via-transparent
+        to-transparent;
+}
+
+.glass-sidebar::after {
+    content: "";
+
+    @apply absolute inset-0 pointer-events-none;
+
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.35);
 }

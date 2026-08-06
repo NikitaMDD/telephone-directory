@@ -15,6 +15,7 @@ function Card({
     return (
         <div
             className={cn(
+                // "glass-card",
                 "rounded-2xl",
                 "border",
                 "border-border",
