@@ -5,8 +5,15 @@ import { Typography } from "@/shared/ui/Typography";
 import { exportApi } from "@/features/export/api/export.api";
 
 import { downloadFile } from "@/shared/lib/downloadFile";
+import { cn } from "@/shared/lib/cn";
 
-export function ExportPage() {
+interface ExportPageProps {
+    className?: string;
+}
+
+export function ExportPage({
+    className
+}:ExportPageProps) {
     async function handlePdf() {
         const blob =
             await exportApi.exportPdf();
@@ -22,8 +29,13 @@ export function ExportPage() {
     }
 
     return (
-        <div className="space-y-8 p-8">
-
+        <div className={
+            cn(
+                'space-y-8',
+                'p-8',
+                className
+            )
+        }>
             <div>
                 <Typography
                     variant="h1"

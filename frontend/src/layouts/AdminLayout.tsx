@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "@/shared/ui/Header";
 import { Sidebar } from "@/shared/ui/Sidebar";
 import { MobileMenu } from "@/shared/ui/MobileMenu";
+import { BackgroundsLayer } from "@/shared/ui/BackgroundsLayer";
 
 import {
     AnimatePresence,
@@ -17,7 +18,8 @@ export function AdminLayout() {
         useState(false);
 
     return (
-        <div className="flex h-screen ">
+        <div className="flex h-screen">
+            <BackgroundsLayer/>
             <Sidebar
                 collapsed={collapsed}
                 onCollapse={() =>

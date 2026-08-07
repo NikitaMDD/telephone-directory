@@ -125,7 +125,7 @@ export function DashboardPage() {
                         y: 0,
                     }}
                 >
-                    <Card className="p-6 flex items-center justify-between glass-card">
+                    <Card className="p-6 flex items-center justify-between">
                         <div>
                             <Typography
                                 color="secondary"

@@ -9,10 +9,10 @@ body,
 #root {
     width: 100%;
     min-height: 100%;
-    background-image: url('/src/assets/TGPU-Tolstogo-VK_cover-white-01.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+}
+
+#root {
+    position: relative;
 }
 
 body {
@@ -63,8 +63,40 @@ body {
 
 .glass-sidebar::after {
     content: "";
-
     @apply absolute inset-0 pointer-events-none;
-
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.35);
+}
+
+/* .background-image {
+    background-image: url('/src/assets/TGPU_sign-leaf-rgb.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+} */
+
+.background-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;      /* ← вот здесь обрезается right: -175px */
+    z-index: -1;
+    pointer-events: none;
+}
+
+.background-logo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    /* z-index и pointer-events отсюда можно убрать — они теперь на слое */
+}
+
+.background-logo--upper {
+    top: -6px;
+    right: -175px;
+}
+
+.background-logo--lower {
+    bottom: 20px;
+    left: 25px;
+    height: auto;
 }

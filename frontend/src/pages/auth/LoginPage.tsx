@@ -17,6 +17,8 @@ import {
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { useAuth } from "@/shared/auth";
 
+import {BackgroundImage} from "@/shared/ui/BackgroundImage";
+
 export function LoginPage() {
 
     const navigate = useNavigate();
@@ -35,15 +37,15 @@ export function LoginPage() {
 
     const onSubmit = async (data: LoginSchema) => {
         try {
-            console.log("1. submit");
+            // console.log("1. submit");
 
             const response = await loginMutation.mutateAsync(data);
 
-            console.log("2. response", response);
+            // console.log("2. response", response);
 
             login(response.user);
 
-            console.log("3. after login");
+            // console.log("3. after login");
 
             navigate("/admin");
 
@@ -54,7 +56,7 @@ export function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="flex min-h-screen items-center justify-center p-6">
             <Card className="w-full max-w-md">
                 <Card.Content className="space-y-8">
 

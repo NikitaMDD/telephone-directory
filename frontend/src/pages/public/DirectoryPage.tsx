@@ -10,6 +10,7 @@ import { Button } from "@/shared/ui/Button";
 import { Card } from "@/shared/ui/Card";
 import { Input } from "@/shared/ui/Input";
 import { Typography } from "@/shared/ui/Typography";
+import { ExportPage } from "../admin/ExportPage";
 
 export function DirectoryPage() {
     const navigate = useNavigate();
@@ -113,7 +114,6 @@ export function DirectoryPage() {
             <div className="space-y-8">
                 {filtered.map(({ department, employees }) => (
                     <Card key={department.id} className="p-6">
-                        {/* DEPARTMENT HEADER */}
                         <div className="mb-4">
                             <Typography variant="h2" weight="bold">
                                 {department.name}
@@ -125,9 +125,10 @@ export function DirectoryPage() {
                         </div>
 
                         {/* TABLE HEADER */}
-                        <div className="grid grid-cols-5 gap-4 text-sm font-semibold border-b pb-2 mb-2">
+                        <div className="grid grid-cols-6 gap-4 text-sm font-semibold border-b pb-2 mb-2">
                             <div>ФИО</div>
                             <div>Должность</div>
+                            <div>Email</div>
                             <div>Внутр.</div>
                             <div>Город.</div>
                             <div>Каб.</div>
@@ -138,12 +139,13 @@ export function DirectoryPage() {
                             {employees.map((e) => (
                                 <div
                                     key={e.id}
-                                    className="grid grid-cols-5 gap-4 text-sm py-2 border-b last:border-0"
+                                    className="grid grid-cols-6 gap-4 text-sm py-2 border-b last:border-0"
                                 >
                                     <div>
                                         {e.lastName} {e.firstName}
                                     </div>
                                     <div>{e.position}</div>
+                                    <div>{e.email}</div>
                                     <div>{e.internalPhone ?? "-"}</div>
                                     <div>{e.cityPhone ?? "-"}</div>
                                     <div>{e.room ?? "-"}</div>
@@ -159,6 +161,7 @@ export function DirectoryPage() {
                     </Card>
                 ))}
             </div>
+            <ExportPage className="p-0"/>
         </div>
     );
 }
