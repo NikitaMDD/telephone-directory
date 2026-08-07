@@ -7,6 +7,8 @@ import { exportApi } from "@/features/export/api/export.api";
 import { downloadFile } from "@/shared/lib/downloadFile";
 import { cn } from "@/shared/lib/cn";
 
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
+
 interface ExportPageProps {
     className?: string;
 }
@@ -36,19 +38,11 @@ export function ExportPage({
                 className
             )
         }>
-            <div>
-                <Typography
-                    variant="h1"
-                    weight="bold"
-                >
-                    Экспорт справочника
-                </Typography>
 
-                <Typography color="secondary">
-                    Формирование печатной версии
-                    телефонного справочника
-                </Typography>
-            </div>
+            <PageHeader
+                title="Экспорт справочника"
+                subtitle="Формирование печатной версии телефонного справочника"
+            />
 
             <div className="grid gap-6 md:grid-cols-2">
 

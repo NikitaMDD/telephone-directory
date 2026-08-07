@@ -21,8 +21,8 @@ export function DialogHeader({
 
             {description && (
                 <Typography
-                    variant="body"
-                    color="secondary"
+                    variant="bodySmall"
+                    color="primary"
                     className="mt-2"
                 >
                     {description}

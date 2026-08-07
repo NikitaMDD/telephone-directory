@@ -84,10 +84,7 @@ export function Select<T>({
         <div className="space-y-2">
 
             {label && (
-                <Typography
-                    variant="label"
-                    weight="medium"
-                >
+                <Typography variant="label" weight="medium">
                     {label}
                 </Typography>
             )}
@@ -101,17 +98,12 @@ export function Select<T>({
 
                 <RadixSelect.Trigger
                     className={cn(
-                        "flex h-11 w-full items-center justify-between rounded-xl border bg-white px-4 outline-none transition",
-
-                        error
-                            ? "border-danger"
-                            : "border-border hover:border-primary"
+                        "glass-select-trigger",
+                        error && "glass-select-trigger--error"
                     )}
                 >
 
-                    <RadixSelect.Value
-                        placeholder={placeholder}
-                    />
+                    <RadixSelect.Value placeholder={placeholder} />
 
                     <RadixSelect.Icon>
                         <ChevronDown size={18} />
@@ -124,18 +116,10 @@ export function Select<T>({
                     <RadixSelect.Content
                         position="popper"
                         data-select-dropdown="true"
-                        className="
-                            z-[100]
-                            pointer-events-auto
-                            overflow-hidden
-                            rounded-xl
-                            border
-                            bg-white
-                            shadow-xl
-                        "
+                        className="glass-select-dropdown z-[100] pointer-events-auto"
                     >
 
-                        <RadixSelect.ScrollUpButton className="flex justify-center py-1">
+                        <RadixSelect.ScrollUpButton className="glass-select-scroll-btn">
                             <ChevronUp size={16} />
                         </RadixSelect.ScrollUpButton>
 
@@ -145,22 +129,10 @@ export function Select<T>({
                                 <RadixSelect.Item
                                     key={getValue(item)}
                                     value={getValue(item)}
-                                    className="
-                                        relative
-                                        flex
-                                        cursor-pointer
-                                        items-center
-                                        rounded-lg
-                                        py-2
-                                        pl-8
-                                        pr-3
-                                        outline-none
-                                        hover:bg-surface
-                                        data-[state=checked]:bg-primary/10
-                                    "
+                                    className="glass-select-item"
                                 >
 
-                                    <RadixSelect.ItemIndicator className="absolute left-2">
+                                    <RadixSelect.ItemIndicator className="glass-select-item-indicator">
                                         <Check size={16} />
                                     </RadixSelect.ItemIndicator>
 
@@ -173,6 +145,10 @@ export function Select<T>({
 
                         </RadixSelect.Viewport>
 
+                        <RadixSelect.ScrollDownButton className="glass-select-scroll-btn">
+                            <ChevronDown size={16} />
+                        </RadixSelect.ScrollDownButton>
+
                     </RadixSelect.Content>
 
                 </RadixSelect.Portal>
@@ -180,10 +156,7 @@ export function Select<T>({
             </RadixSelect.Root>
 
             {error && (
-                <Typography
-                    variant="caption"
-                    color="danger"
-                >
+                <Typography variant="caption" color="danger">
                     {error}
                 </Typography>
             )}

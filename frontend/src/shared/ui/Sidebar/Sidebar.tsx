@@ -35,9 +35,9 @@ export function Sidebar({
                 duration: 0.25,
             }}
             className={cn(
-                // "flex flex-col border-r glass-sidebar",
+                "flex flex-col border-r glass-sidebar",
 
-                "flex flex-col border-r bg-white",
+                // "flex flex-col border-r bg-white",
 
                 mobile
                     ? "h-full w-full"

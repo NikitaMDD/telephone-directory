@@ -12,6 +12,8 @@ import { LocationDialog } from "@/features/locations/components/LocationDialog";
 
 import type { Location } from "@/features/locations/types";
 
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
+
 export function LocationsPage() {
     const [search, setSearch] =
         useState("");
@@ -45,28 +47,17 @@ export function LocationsPage() {
 
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 
-                <div>
-
-                    <Typography
-                        variant="h1"
-                        weight="bold"
-                    >
-                        Корпуса
-                    </Typography>
-
-                    <Typography
-                        color="secondary"
-                    >
-                        Управление корпусами университета
-                    </Typography>
-
-                </div>
-
-                <Button
-                    onClick={handleCreate}
-                >
-                    Добавить корпус
-                </Button>
+                <PageHeader
+                    title="Корпуса"
+                    subtitle="Управление корпусами университета"
+                    actions={
+                        <Button
+                            onClick={handleCreate}
+                        >
+                            Добавить корпус
+                        </Button>
+                    }
+                />
 
             </div>
 

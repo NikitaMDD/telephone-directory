@@ -4,6 +4,13 @@
 
 @import "./fonts.css";
 
+:root {
+    --color-primary: #D44822;
+    --color-danger: #D32F2F;
+    --color-success: #2E8B57;
+    --color-warning: #E8A317;
+}
+
 html,
 body,
 #root {
@@ -25,7 +32,7 @@ body {
 
 .glass-card {
   @apply relative overflow-hidden rounded-2xl border border-white/20;
-  @apply bg-gradient-to-br from-white/35 via-white/15 to-white/10;
+  @apply bg-gradient-to-br from-white/60 via-white/45 to-white/35;
   @apply backdrop-blur-[10px] backdrop-saturate-[180%];
 
   box-shadow:
@@ -34,15 +41,25 @@ body {
     inset 0 -1px 0 rgba(255, 255, 255, 0.08);
 }
 
+/* ============ Liquid Glass: панель под текст ============ */
+
+.glass-panel {
+    @apply relative overflow-hidden rounded-2xl border border-white/25;
+    @apply bg-gradient-to-br from-white/60 via-white/45 to-white/35;
+    @apply backdrop-blur-[14px] backdrop-saturate-[180%];
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+}
+
 .glass-sidebar {
     @apply relative overflow-hidden;
 
     @apply border-r border-white/20;
 
-    @apply bg-gradient-to-b
-        from-white/20
-        via-white/10
-        to-white/5;
+    @apply bg-gradient-to-br from-white/60 via-white/45 to-white/35;
 
     @apply backdrop-blur-[10px]
         backdrop-saturate-[180%];
@@ -77,7 +94,7 @@ body {
 .background-layer {
     position: absolute;
     inset: 0;
-    overflow: hidden;      /* ← вот здесь обрезается right: -175px */
+    overflow: hidden;
     z-index: -1;
     pointer-events: none;
 }
@@ -87,7 +104,6 @@ body {
     width: 100%;
     height: 100%;
     max-width: 600px;
-    /* z-index и pointer-events отсюда можно убрать — они теперь на слое */
 }
 
 .background-logo--upper {
@@ -99,4 +115,484 @@ body {
     bottom: 20px;
     left: 25px;
     height: auto;
+}
+
+/* ============ регистрируем «анимируемые» цвета градиента ============ */
+
+@property --glass-from {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: rgba(255, 255, 255, 0.50);
+}
+@property --glass-via {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: rgba(255, 255, 255, 0.25);
+}
+@property --glass-to {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: rgba(255, 255, 255, 0.10);
+}
+
+.glass-btn {
+    @apply inline-flex items-center justify-center gap-2 overflow-hidden
+        rounded-full font-medium
+        border border-white/30
+        backdrop-blur-[10px] backdrop-saturate-[180%]
+        cursor-pointer select-none;
+
+    background: linear-gradient(to bottom,
+        var(--glass-from),
+        var(--glass-via) 50%,
+        var(--glass-to));
+
+    transition:
+        --glass-from 0.25s ease,
+        --glass-via 0.25s ease,
+        --glass-to 0.25s ease,
+        box-shadow 0.25s ease,
+        backdrop-filter 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.glass-btn:hover {
+    --glass-from: rgba(255, 255, 255, 0.60);
+    --glass-via: rgba(255, 255, 255, 0.35);
+    --glass-to: rgba(255, 255, 255, 0.15);
+}
+
+.glass-btn:active {
+    backdrop-filter: blur(14px) saturate(200%);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.glass-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 60%, transparent);
+    outline-offset: 2px;
+}
+
+.glass-btn--ghost {
+    @apply border-white/20;
+    --glass-from: rgba(255, 255, 255, 0.16);
+    --glass-via: rgba(255, 255, 255, 0.12);
+    --glass-to: rgba(255, 255, 255, 0.10);
+}
+
+.glass-btn--ghost:hover {
+    --glass-from: rgba(255, 255, 255, 0.26);
+    --glass-via: rgba(255, 255, 255, 0.20);
+    --glass-to: rgba(255, 255, 255, 0.16);
+}
+
+.glass-btn--outline {
+    @apply border-white/40;
+    --glass-from: rgba(255, 255, 255, 0.10);
+    --glass-via: rgba(255, 255, 255, 0.08);
+    --glass-to: rgba(255, 255, 255, 0.06);
+}
+
+.glass-btn--outline:hover {
+    --glass-from: rgba(255, 255, 255, 0.18);
+    --glass-via: rgba(255, 255, 255, 0.14);
+    --glass-to: rgba(255, 255, 255, 0.10);
+}
+
+.glass-btn--primary {
+    @apply text-white border-white/25;
+    --glass-from: color-mix(in srgb, var(--color-primary) 62%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-primary) 71%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-primary) 80%, transparent);
+    box-shadow:
+        0 6px 22px color-mix(in srgb, var(--color-primary) 35%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.glass-btn--primary:hover {
+    --glass-from: color-mix(in srgb, var(--color-primary) 72%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-primary) 80%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-primary) 88%, transparent);
+}
+
+.glass-btn--danger {
+    @apply text-white border-white/25;
+    --glass-from: color-mix(in srgb, var(--color-danger) 60%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-danger) 69%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-danger) 78%, transparent);
+    box-shadow:
+        0 6px 22px color-mix(in srgb, var(--color-danger) 30%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.40),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+}
+
+.glass-btn--danger:hover {
+    --glass-from: color-mix(in srgb, var(--color-danger) 70%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-danger) 78%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-danger) 86%, transparent);
+}
+
+/* ============ Liquid Glass: пункты навигации ============ */
+
+.glass-nav-item {
+    @apply relative overflow-hidden rounded-xl font-medium;
+
+    --glass-from: rgba(255, 255, 255, 0);
+    --glass-via: rgba(255, 255, 255, 0);
+    --glass-to: rgba(255, 255, 255, 0);
+
+    color: #5F5F5F;
+
+    background: linear-gradient(to bottom,
+        var(--glass-from),
+        var(--glass-via) 50%,
+        var(--glass-to));
+
+    transition:
+        --glass-from 0.25s ease,
+        --glass-via 0.25s ease,
+        --glass-to 0.25s ease,
+        box-shadow 0.25s ease,
+        color 0.25s ease;
+}
+
+.glass-nav-item--active {
+    color: #fff;
+    --glass-from: color-mix(in srgb, var(--color-primary) 62%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-primary) 71%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-primary) 80%, transparent);
+    box-shadow:
+        0 6px 18px color-mix(in srgb, var(--color-primary) 30%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.glass-nav-item--active:hover {
+    --glass-from: color-mix(in srgb, var(--color-primary) 70%, transparent);
+    --glass-via: color-mix(in srgb, var(--color-primary) 78%, transparent);
+    --glass-to: color-mix(in srgb, var(--color-primary) 86%, transparent);
+}
+
+/* ============ Liquid Glass: инпут ============ */
+
+.glass-input {
+    @apply h-11 w-full rounded-xl outline-none;
+
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(17, 17, 17, 0.10);
+    backdrop-filter: blur(8px) saturate(160%);
+
+    color: #111;
+    caret-color: var(--color-primary);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 2px 10px rgba(0, 0, 0, 0.05);
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.glass-input::placeholder {
+    color: #8A8A8A;
+    opacity: 1;
+}
+
+.glass-input:hover {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(17, 17, 17, 0.16);
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: color-mix(in srgb, var(--color-primary) 55%, white 45%);
+    box-shadow:
+        inset 0 0 0 2px color-mix(in srgb, var(--color-primary) 35%, transparent),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-input--error {
+    border-color: color-mix(in srgb, var(--color-danger) 50%, white 50%);
+    background: rgba(255, 240, 240, 0.45);
+}
+
+.glass-input--error:focus {
+    border-color: color-mix(in srgb, var(--color-danger) 60%, white 40%);
+    box-shadow:
+        inset 0 0 0 2px color-mix(in srgb, var(--color-danger) 40%, transparent),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-input:disabled {
+    @apply cursor-not-allowed;
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 0.6;
+}
+
+/* ============ Liquid Glass: тултип графика ============ */
+
+.glass-tooltip {
+    @apply rounded-xl px-4 py-3;
+
+    /* «матовое» стекло: читается даже без backdrop-filter */
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.78),
+        rgba(255, 255, 255, 0.62));
+
+    border: 1px solid rgba(17, 17, 17, 0.10);
+
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ============ Liquid Glass: таблицы ============ */
+
+.glass-table {
+    @apply w-full;
+}
+
+.glass-table thead th {
+    @apply px-6 py-4 text-left font-semibold whitespace-nowrap;
+
+    color: #5F5F5F;
+
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.50),
+        rgba(255, 255, 255, 0.30));
+
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.glass-table tbody td {
+    @apply px-6 py-4;
+    border-top: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+.glass-table tbody tr:first-child td {
+    border-top: none;
+}
+
+.glass-table tbody tr {
+    position: relative;
+    transition: background-color 0.25s ease;
+}
+
+.glass-table tbody tr::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.35),
+        rgba(255, 255, 255, 0.15));
+    
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.glass-table tbody tr:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.glass-table tbody tr:hover::after {
+    opacity: 1;
+}
+
+/* ============ Liquid Glass: списки (grid/div-based) ============ */
+
+.glass-list-header {
+    @apply px-6 py-3 text-sm font-semibold;
+
+    color: #5F5F5F;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.50),
+        rgba(255, 255, 255, 0.30));
+
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    border-radius: 10px;
+}
+
+.glass-list-row {
+    @apply relative px-6 py-3 text-sm;
+
+    border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+    transition: background-color 0.25s ease;
+}
+
+.glass-list-row:last-child {
+    border-bottom: none;
+}
+
+.glass-list-row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.35),
+        rgba(255, 255, 255, 0.15));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    border-radius: 8px;
+}
+
+.glass-list-row:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.glass-list-row:hover::after {
+    opacity: 1;
+}
+
+/* ============ Liquid Glass: селект ============ */
+
+.glass-select-trigger {
+    @apply flex h-11 w-full items-center justify-between rounded-xl px-4 outline-none;
+
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(17, 17, 17, 0.10);
+    backdrop-filter: blur(8px) saturate(160%);
+
+    color: #111;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 2px 10px rgba(0, 0, 0, 0.05);
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+
+    cursor: pointer;
+}
+
+.glass-select-trigger:hover {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(17, 17, 17, 0.16);
+}
+
+.glass-select-trigger:focus,
+.glass-select-trigger[data-state="open"] {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: color-mix(in srgb, var(--color-primary) 55%, white 45%);
+    box-shadow:
+        inset 0 0 0 2px color-mix(in srgb, var(--color-primary) 35%, transparent),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-select-trigger:disabled {
+    @apply cursor-not-allowed;
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 0.6;
+}
+
+.glass-select-trigger--error {
+    border-color: color-mix(in srgb, var(--color-danger) 50%, white 50%);
+    background: rgba(255, 240, 240, 0.45);
+}
+
+.glass-select-trigger--error:focus {
+    border-color: color-mix(in srgb, var(--color-danger) 60%, white 40%);
+    box-shadow:
+        inset 0 0 0 2px color-mix(in srgb, var(--color-danger) 40%, transparent),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-select-dropdown {
+    @apply overflow-hidden rounded-xl;
+
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.78),
+        rgba(255, 255, 255, 0.62));
+
+    border: 1px solid rgba(17, 17, 17, 0.10);
+
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.glass-select-item {
+    @apply relative flex items-center rounded-lg py-2 pl-8 pr-3 outline-none;
+
+    transition: background-color 0.25s ease;
+    cursor: pointer;
+}
+
+.glass-select-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.35),
+        rgba(255, 255, 255, 0.15));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    border-radius: 8px;
+}
+
+.glass-select-item:hover,
+.glass-select-item:focus {
+    background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.glass-select-item:hover::after,
+.glass-select-item:focus::after {
+    opacity: 1;
+}
+
+.glass-select-item[data-state="checked"] {
+    background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.glass-select-item[data-state="checked"]::after {
+    opacity: 0.6;
+}
+
+.glass-select-item-indicator {
+    @apply absolute left-2 flex items-center justify-center;
+    color: var(--color-primary);
+}
+
+.glass-select-scroll-btn {
+    @apply flex items-center justify-center py-1;
+    color: #8A8A8A;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.glass-select-scroll-btn:hover {
+    color: #5F5F5F;
 }

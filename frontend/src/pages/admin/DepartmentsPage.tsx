@@ -11,6 +11,7 @@ import { DepartmentsTable } from "@/features/departments/components/DepartmentsT
 import { DepartmentDialog } from "@/features/departments/components/DepartmentDialog";
 
 import type { Department } from "@/features/departments/types";
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
 
 export function DepartmentsPage() {
     const [search, setSearch] =
@@ -45,31 +46,20 @@ export function DepartmentsPage() {
 
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 
-                <div>
+                <PageHeader
+                    title="Подразделения"
+                    subtitle="Управление подразделениями университета"
+                    actions={
+                        <Button
+                            onClick={
+                                handleCreate
+                            }
+                        >
 
-                    <Typography
-                        variant="h1"
-                        weight="bold"
-                    >
-                        Подразделения
-                    </Typography>
-
-                    <Typography
-                        color="secondary"
-                    >
-                        Управление подразделениями университета
-                    </Typography>
-
-                </div>
-
-                <Button
-                    onClick={
-                        handleCreate
+                            Добавить подразделение
+                        </Button>
                     }
-                >
-
-                    Добавить подразделение
-                </Button>
+                />
 
             </div>
 

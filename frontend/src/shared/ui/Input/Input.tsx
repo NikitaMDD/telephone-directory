@@ -36,23 +36,18 @@ export const Input = forwardRef<
         },
         ref
     ) => {
-        // Объединяем: если передана иконка, используем её, иначе — section
         const effectiveLeft = leftIcon ?? leftSection;
         const effectiveRight = rightIcon ?? rightSection;
 
         return (
             <div className="flex flex-col gap-2">
-
                 {label && (
-                    <Typography
-                        variant="label"
-                    >
+                    <Typography variant="label">
                         {label}
                     </Typography>
                 )}
 
                 <div className="relative">
-
                     {effectiveLeft && (
                         <div
                             className={cn(
@@ -69,20 +64,10 @@ export const Input = forwardRef<
                     <input
                         ref={ref}
                         className={cn(
-                            "h-11 w-full rounded-xl",
-                            "border border-border",
-                            "bg-background",
-                            "px-4",
-                            effectiveLeft &&
-                                "pl-10",
-                            effectiveRight &&
-                                "pr-10",
-                            "outline-none",
-                            "transition-colors",
-                            "focus:border-primary",
-                            error &&
-                                "border-danger",
-
+                            "glass-input",
+                            effectiveLeft ? "pl-10" : "pl-4",
+                            effectiveRight ? "pr-10" : "pr-4",
+                            error && "glass-input--error",
                             className
                         )}
                         {...props}
@@ -93,7 +78,6 @@ export const Input = forwardRef<
                             className={cn(
                                 "absolute right-3 top-1/2 -translate-y-1/2",
                                 "flex items-center justify-center",
-                                "text-muted-foreground"
                             )}
                         >
                             {effectiveRight}
@@ -102,17 +86,11 @@ export const Input = forwardRef<
                 </div>
 
                 {error ? (
-                    <Typography
-                        variant="caption"
-                        color="danger"
-                    >
+                    <Typography variant="caption" color="danger">
                         {error}
                     </Typography>
                 ) : helperText ? (
-                    <Typography
-                        variant="caption"
-                        color="secondary"
-                    >
+                    <Typography variant="caption" color="secondary">
                         {helperText}
                     </Typography>
                 ) : null}

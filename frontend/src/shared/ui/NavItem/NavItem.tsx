@@ -20,30 +20,20 @@ export function NavItem({
             {({ isActive }) => (
                 <motion.div
                     initial={false}
-                    whileHover={{
-                        x: 2,
-                    }}
-                    whileTap={{
-                        scale: 0.98,
-                    }}
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.98 }}
                     transition={{
                         type: "tween",
                         duration: 0.15,
                         ease: "easeOut",
                     }}
+                    title={collapsed ? item.title : undefined}
                     className={cn(
-                        "flex h-11 w-full items-center overflow-hidden rounded-xl px-4",
-                        "transition-colors duration-200",
-
-                        isActive
-                            ? "bg-primary text-white shadow"
-                            : "text-text-secondary hover:bg-surface hover:text-text"
+                        "glass-nav-item flex h-11 w-full items-center overflow-hidden px-4",
+                        isActive && "glass-nav-item--active"
                     )}
                 >
-                    <Icon
-                        size={20}
-                        className="shrink-0"
-                    />
+                    <Icon size={20} className="shrink-0" />
 
                     <motion.span
                         initial={false}

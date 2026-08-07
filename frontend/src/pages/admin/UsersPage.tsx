@@ -12,6 +12,8 @@ import { UserDialog } from "@/features/users/components/UserDialog";
 
 import type { User } from "@/features/users/types";
 
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
+
 export function UsersPage() {
     const [search, setSearch] =
         useState("");
@@ -41,28 +43,17 @@ export function UsersPage() {
 
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 
-                <div>
-
-                    <Typography
-                        variant="h1"
-                        weight="bold"
-                    >
-                        Пользователи
-                    </Typography>
-
-                    <Typography
-                        color="secondary"
-                    >
-                        Управление пользователями системы
-                    </Typography>
-
-                </div>
-
-                <Button
-                    onClick={handleCreate}
-                >
-                    Добавить пользователя
-                </Button>
+                <PageHeader
+                    title="Пользователи"
+                    subtitle="Управление пользователями системы"
+                    actions={
+                        <Button
+                            onClick={handleCreate}
+                        >
+                            Добавить пользователя
+                        </Button>
+                    }
+                />
 
             </div>
 

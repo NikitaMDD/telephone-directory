@@ -97,61 +97,39 @@ ${location.address ?? ""}
         <>
             <Card className="overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead className="bg-surface">
+                    <table className="glass-table">
+
+                        <thead>
                             <tr>
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    Название
-                                </th>
-
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    Адрес
-                                </th>
-
+                                <th>Название</th>
+                                <th>Адрес</th>
                                 <th className="w-24" />
                             </tr>
                         </thead>
 
                         <tbody>
-                            {filteredLocations.map(
-                                (location) => (
-                                    <tr
-                                        key={
-                                            location.id
-                                        }
-                                        className="border-t transition-colors hover:bg-surface"
-                                    >
-                                        <td className="px-6 py-4">
-                                            <Typography weight="medium">
-                                                {
-                                                    location.name
-                                                }
-                                            </Typography>
-                                        </td>
+                            {filteredLocations.map((location) => (
+                                <tr key={location.id}>
+                                    <td>
+                                        <Typography weight="medium">
+                                            {location.name}
+                                        </Typography>
+                                    </td>
 
-                                        <td className="px-6 py-4">
-                                            {location.address ||
-                                                "-"}
-                                        </td>
+                                    <td>{location.address || "-"}</td>
 
-                                        <td className="px-6 py-4">
-                                            <LocationActions
-                                                onEdit={() =>
-                                                    onEdit(
-                                                        location
-                                                    )
-                                                }
-                                                onDelete={() =>
-                                                    handleOpenDelete(
-                                                        location
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                    </tr>
-                                )
-                            )}
+                                    <td>
+                                        <LocationActions
+                                            onEdit={() => onEdit(location)}
+                                            onDelete={() =>
+                                                handleOpenDelete(location)
+                                            }
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
+
                     </table>
                 </div>
             </Card>

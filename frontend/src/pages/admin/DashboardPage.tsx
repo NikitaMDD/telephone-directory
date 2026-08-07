@@ -8,6 +8,7 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
+    CartesianGrid,
     PieChart,
     Pie,
     Cell,
@@ -27,8 +28,11 @@ import { useEmployees } from "@/features/employees/hooks/useEmployees";
 import { useDepartments } from "@/features/departments/hooks/useDepartments";
 import { useLocations } from "@/features/locations/hooks/useLocations";
 import { useUsers } from "@/features/users/hooks/useUsers";
+ 
+import { GlassTooltip } from "@/shared/ui/Tooltip";
 
 import { useAuth } from "@/shared/auth";
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
 
 const COLORS = [
     "#6366f1",
@@ -97,21 +101,10 @@ export function DashboardPage() {
     return (
         <div className="space-y-8 p-8">
 
-            <div>
-                <Typography
-                    variant="h1"
-                    weight="bold"
-                >
-                    Добро пожаловать,{" "}
-                    {user?.name ??
-                        "Администратор"}{" "}
-                </Typography>
-
-                <Typography color="secondary">
-                    Система телефонного
-                    справочника
-                </Typography>
-            </div>
+            <PageHeader
+                title={`Добро пожаловать, ${user?.name ?? "Администратор"}`}
+                subtitle="Система телефонного справочника"
+            />
 
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
 
@@ -128,7 +121,7 @@ export function DashboardPage() {
                     <Card className="p-6 flex items-center justify-between">
                         <div>
                             <Typography
-                                color="secondary"
+                                color="primary"
                                 variant="bodySmall"
                             >
                                 Сотрудники
@@ -151,7 +144,7 @@ export function DashboardPage() {
                 <Card className="p-6 flex items-center justify-between">
                     <div>
                         <Typography
-                            color="secondary"
+                            color="primary"
                             variant="bodySmall"
                         >
                             Подразделения
@@ -173,7 +166,7 @@ export function DashboardPage() {
                 <Card className="p-6 flex items-center justify-between">
                     <div>
                         <Typography
-                            color="secondary"
+                            color="primary"
                             variant="bodySmall"
                         >
                             Корпуса
@@ -195,7 +188,7 @@ export function DashboardPage() {
                 <Card className="p-6 flex items-center justify-between">
                     <div>
                         <Typography
-                            color="secondary"
+                            color="primary"
                             variant="bodySmall"
                         >
                             Пользователи
@@ -218,37 +211,53 @@ export function DashboardPage() {
             <div className="grid gap-6">
 
                 <Card className="p-6">
-                    <Typography
-                        variant="h2"
-                        weight="bold"
-                    >
-                        Сотрудники по
-                        подразделениям
+                    <Typography variant="h2" weight="bold">
+                        Сотрудники по подразделениям
                     </Typography>
 
                     <div className="h-80 mt-4">
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <BarChart
-                                data={
-                                    employeesByDepartment
-                                }
-                            >
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={employeesByDepartment}>
+                                <defs>
+                                    <linearGradient id="barGlass" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#D44822" stopOpacity={0.85} />
+                                        <stop offset="100%" stopColor="#D44822" stopOpacity={0.50} />
+                                    </linearGradient>
+                                </defs>
+
+                                <CartesianGrid
+                                    strokeDasharray="3 3"
+                                    stroke="rgba(17, 17, 17, 0.06)"
+                                    vertical={false}
+                                />
+
+                                <XAxis
+                                    dataKey="name"
+                                    axisLine={{ stroke: "rgba(17, 17, 17, 0.10)" }}
+                                    tickLine={false}
+                                    tick={{ fill: "#000000", fontSize: 13 }}
+                                    dy={8}
+                                />
+
+                                <YAxis
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: "#000000", fontSize: 12 }}
+                                    allowDecimals={false}
+                                />
+
+                                <Tooltip
+                                    cursor={{ fill: "rgba(212, 72, 34, 0.06)" }}
+                                    content={<GlassTooltip />}
+                                />
 
                                 <Bar
                                     dataKey="value"
-                                    fill="#6366f1"
-                                    radius={[
-                                        6,
-                                        6,
-                                        0,
-                                        0,
-                                    ]}
+                                    fill="url(#barGlass)"
+                                    stroke="rgba(255, 255, 255, 0.40)"
+                                    strokeWidth={1}
+                                    radius={[8, 8, 0, 0]}
+                                    activeBar={{ fillOpacity: 1 }}
                                 />
                             </BarChart>
                         </ResponsiveContainer>

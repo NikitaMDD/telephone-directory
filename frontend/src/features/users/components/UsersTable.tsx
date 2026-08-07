@@ -17,6 +17,7 @@ import {
 } from "@/shared/constants/roles";
 
 import type { User } from "../types";
+import { cn } from "@/shared/lib/cn";
 
 interface Props {
     search: string;
@@ -85,96 +86,73 @@ ${ROLE_LABELS[user.role]}
     return (
         <Card className="overflow-hidden">
             <div className="overflow-x-auto">
+                <table className="glass-table">
 
-                <table className="w-full">
-
-                    <thead className="bg-surface">
-
+                    <thead>
                         <tr>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Имя
-                            </th>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Логин
-                            </th>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Роль
-                            </th>
-
-                            <th className="px-6 py-4 text-left font-semibold">
-                                Статус
-                            </th>
-
+                            <th>Имя</th>
+                            <th>Логин</th>
+                            <th>Роль</th>
+                            <th>Статус</th>
                             <th className="w-24" />
-
                         </tr>
-
                     </thead>
 
                     <tbody>
+                        {filteredUsers.map((user) => (
+                            <tr key={user.id}>
+                                <td>
+                                    <Typography weight="medium">
+                                        {user.name}
+                                    </Typography>
+                                </td>
 
-                        {filteredUsers.map(
-                            (user) => (
-                                <tr
-                                    key={user.id}
-                                    className="border-t transition-colors hover:bg-surface"
-                                >
-                                    <td className="px-6 py-4">
-                                        <Typography weight="medium">
-                                            {user.name}
-                                        </Typography>
-                                    </td>
+                                <td>{user.login}</td>
 
-                                    <td className="px-6 py-4">
-                                        {user.login}
-                                    </td>
+                                <td>{ROLE_LABELS[user.role]}</td>
 
-                                    <td className="px-6 py-4">
-                                        {
-                                            ROLE_LABELS[
-                                                user.role
-                                            ]
-                                        }
-                                    </td>
-
-                                    <td className="px-6 py-4">
-                                        {user.isActive
-                                            ? "Активен"
-                                            : "Заблокирован"}
-                                    </td>
-
-                                    <td className="px-6 py-4">
-                                        <UserActions
-                                            onEdit={() =>
-                                                onEdit(
-                                                    user
-                                                )
-                                            }
-                                            // onDelete={() => {
-                                            //     if (
-                                            //         window.confirm(
-                                            //             `Удалить пользователя "${user.name}"?`
-                                            //         )
-                                            //     ) {
-                                            //         deleteMutation.mutate(
-                                            //             user.id
-                                            //         );
-                                            //     }
-                                            // }}
+                                <td>
+                                    <span
+                                        className={cn(
+                                            "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
+                                            user.isActive
+                                                ? "bg-[#2E8B57]/15 text-[#2E8B57] ring-1 ring-[#2E8B57]/20"
+                                                : "bg-neutral-500/15 text-neutral-600 ring-1 ring-neutral-500/20"
+                                        )}
+                                    >
+                                        <span
+                                            className={cn(
+                                                "h-1.5 w-1.5 rounded-full",
+                                                user.isActive
+                                                    ? "bg-[#2E8B57]"
+                                                    : "bg-neutral-500"
+                                            )}
                                         />
-                                    </td>
+                                        {user.isActive ? "Активен" : "Заблокирован"}
+                                    </span>
+                                </td>
 
-                                </tr>
-                            )
-                        )}
-
+                                <td>
+                                    <UserActions
+                                        onEdit={() => onEdit(user)}
+                                        // onDelete={() => {
+                                        //     if (
+                                        //         window.confirm(
+                                        //             `Удалить пользователя "${user.name}"?`
+                                        //         )
+                                        //     ) {
+                                        //         deleteMutation.mutate(
+                                        //             user.id
+                                        //         );
+                                        //     }
+                                        // }}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
 
                 </table>
-
             </div>
         </Card>
     );

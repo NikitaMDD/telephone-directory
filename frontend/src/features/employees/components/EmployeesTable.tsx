@@ -105,117 +105,54 @@ export function EmployeesTable({
     return (
         <>
             <Card className="overflow-hidden">
-
                 <div className="overflow-x-auto">
+                    <table className="glass-table">
 
-                    <table className="w-full">
-
-                        <thead className="bg-surface">
-
+                        <thead>
                             <tr>
-
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    ФИО
-                                </th>
-
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    Должность
-                                </th>
-
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    Подразделение
-                                </th>
-
-                                <th className="px-6 py-4 text-left font-semibold">
-                                    Телефон
-                                </th>
-
+                                <th>ФИО</th>
+                                <th>Должность</th>
+                                <th>Подразделение</th>
+                                <th>Телефон</th>
                                 <th className="w-20" />
-
                             </tr>
-
                         </thead>
 
                         <tbody>
+                            {filteredEmployees.map((employee) => (
+                                <tr key={employee.id}>
+                                    <td>
+                                        <Typography weight="medium">
+                                            {employee.lastName}{" "}
+                                            {employee.firstName}{" "}
+                                            {employee.middleName}
+                                        </Typography>
+                                    </td>
 
-                            {filteredEmployees.map(
-                                (
-                                    employee
-                                ) => (
-                                    <tr
-                                        key={
-                                            employee.id
-                                        }
-                                        className="border-t transition-colors hover:bg-surface"
-                                    >
-                                        <td className="px-6 py-4">
+                                    <td>{employee.position}</td>
 
-                                            <Typography
-                                                weight="medium"
-                                            >
-                                                {
-                                                    employee.lastName
-                                                }{" "}
-                                                {
-                                                    employee.firstName
-                                                }{" "}
-                                                {employee.middleName}
-                                            </Typography>
+                                    <td>{employee.department.name}</td>
 
-                                        </td>
+                                    <td>
+                                        {employee.internalPhone ??
+                                            employee.cityPhone ??
+                                            "-"}
+                                    </td>
 
-                                        <td className="px-6 py-4">
-
-                                            {
-                                                employee.position
+                                    <td>
+                                        <EmployeeActions
+                                            onEdit={() => onEdit(employee)}
+                                            onDelete={() =>
+                                                handleOpenDelete(employee)
                                             }
-
-                                        </td>
-
-                                        <td className="px-6 py-4">
-
-                                            {
-                                                employee
-                                                    .department
-                                                    .name
-                                            }
-
-                                        </td>
-
-                                        <td className="px-6 py-4">
-
-                                            {employee.internalPhone ??
-                                                employee.cityPhone ??
-                                                "-"}
-
-                                        </td>
-
-                                        <td className="px-6 py-4">
-
-                                            <EmployeeActions
-                                                onEdit={() =>
-                                                    onEdit(
-                                                        employee
-                                                    )
-                                                }
-                                                onDelete={() =>
-                                                    handleOpenDelete(
-                                                        employee
-                                                    )
-                                                }
-                                            />
-
-                                        </td>
-                                    </tr>
-                                )
-                            )}
-
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
 
                     </table>
-
                 </div>
-
             </Card>
 
             <EmployeeDeleteDialog

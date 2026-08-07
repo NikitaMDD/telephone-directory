@@ -5,12 +5,12 @@ import { Plus, Search, X } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
 import { Card } from "@/shared/ui/Card";
 import { Input } from "@/shared/ui/Input";
-import { Typography } from "@/shared/ui/Typography";
 
 import { EmployeeDialog } from "@/features/employees/components/EmployeeDialog";
 import { EmployeesTable } from "@/features/employees/components/EmployeesTable";
 
 import type { Employee } from "@/features/employees/types";
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
 
 export function EmployeesPage() {
     const [search, setSearch] = useState("");
@@ -36,22 +36,15 @@ export function EmployeesPage() {
             {/* HEADER */}
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 
-                <div>
-                    <Typography
-                        variant="h1"
-                        weight="bold"
-                    >
-                        Сотрудники
-                    </Typography>
-
-                    <Typography color="secondary">
-                        Управление сотрудниками университета
-                    </Typography>
-                </div>
-
-                <Button onClick={handleCreate}>
-                    Добавить сотрудника
-                </Button>
+                <PageHeader
+                    title="Сотрудники"
+                    subtitle="Управление сотрудниками университета"
+                    actions={
+                        <Button variant="primary" onClick={handleCreate}>
+                            Добавить сотрудника
+                        </Button>
+                    }
+                />
 
             </div>
 

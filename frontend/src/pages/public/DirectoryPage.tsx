@@ -12,6 +12,8 @@ import { Input } from "@/shared/ui/Input";
 import { Typography } from "@/shared/ui/Typography";
 import { ExportPage } from "../admin/ExportPage";
 
+import { PageHeader } from "@/shared/ui/PageHeader/PageHeader";
+
 export function DirectoryPage() {
     const navigate = useNavigate();
 
@@ -68,26 +70,21 @@ export function DirectoryPage() {
 
     return (
         <div className="space-y-8 p-8">
-            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                <div>
-                    <Typography variant="h1" weight="bold">
-                        Телефонный справочник
-                    </Typography>
-
-                    <Typography color="secondary">
-                        Ректорат и структурные подразделения
-                    </Typography>
-                </div>
-
-                <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => navigate("/login")}
-                >
-                    <LogIn size={18} />
-                    Войти
-                </Button>
-            </div>
+            {/* PAGE HEADER — стеклянная панель */}
+            <PageHeader
+                title={`Телефонный справочник`}
+                subtitle="Ректорат и структурные подразделения"
+                actions={
+                    <Button
+                        variant="primary"
+                        size="lg"
+                        onClick={() => navigate("/login")}
+                    >
+                        <LogIn size={18} />
+                        Войти
+                    </Button>
+                }
+            />
 
             {/* SEARCH */}
             <Card className="p-5">
@@ -101,9 +98,10 @@ export function DirectoryPage() {
                             <button
                                 type="button"
                                 onClick={() => setSearch("")}
-                                className="transition-colors hover:text-foreground"
+                                className="flex h-7 w-7 items-center justify-center rounded-full text-[#5F5F5F] transition-colors hover:bg-white/50 hover:text-[#111]"
+                                aria-label="Очистить поиск"
                             >
-                                <X size={18} />
+                                <X size={16} />
                             </button>
                         ) : null
                     }
@@ -114,7 +112,7 @@ export function DirectoryPage() {
             <div className="space-y-8">
                 {filtered.map(({ department, employees }) => (
                     <Card key={department.id} className="p-6">
-                        <div className="mb-4">
+                        <div className="mb-5">
                             <Typography variant="h2" weight="bold">
                                 {department.name}
                             </Typography>
@@ -125,7 +123,7 @@ export function DirectoryPage() {
                         </div>
 
                         {/* TABLE HEADER */}
-                        <div className="grid grid-cols-6 gap-4 text-sm font-semibold border-b pb-2 mb-2">
+                        <div className="glass-list-header grid grid-cols-6 gap-4">
                             <div>ФИО</div>
                             <div>Должность</div>
                             <div>Email</div>
@@ -135,11 +133,11 @@ export function DirectoryPage() {
                         </div>
 
                         {/* EMPLOYEES */}
-                        <div className="space-y-2">
+                        <div>
                             {employees.map((e) => (
                                 <div
                                     key={e.id}
-                                    className="grid grid-cols-6 gap-4 text-sm py-2 border-b last:border-0"
+                                    className="glass-list-row grid grid-cols-6 gap-4"
                                 >
                                     <div>
                                         {e.lastName} {e.firstName}
@@ -153,7 +151,7 @@ export function DirectoryPage() {
                             ))}
 
                             {employees.length === 0 && (
-                                <div className="text-sm text-muted-foreground py-4">
+                                <div className="px-6 py-4 text-sm text-[#8A8A8A]">
                                     Нет сотрудников
                                 </div>
                             )}
@@ -161,7 +159,7 @@ export function DirectoryPage() {
                     </Card>
                 ))}
             </div>
-            <ExportPage className="p-0"/>
+            <ExportPage className="p-0" />
         </div>
     );
 }

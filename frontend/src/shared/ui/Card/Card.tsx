@@ -15,15 +15,15 @@ function Card({
     return (
         <div
             className={cn(
-                // "glass-card",
-                "rounded-2xl",
-                "border",
-                "border-border",
-                "bg-surface",
-                "shadow-sm",
-                "transition-shadow",
-                "duration-200",
-                "hover:shadow-md",
+                "glass-card",
+                // "rounded-2xl",
+                // "border",
+                // "border-border",
+                // "bg-surface",
+                // "shadow-sm",
+                // "transition-shadow",
+                // "duration-200",
+                // "hover:shadow-md",
                 className
             )}
             {...props}
